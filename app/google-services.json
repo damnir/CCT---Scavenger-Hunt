@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "320730990455",
+    "firebase_url": "https://cct-scavenger-hunt-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "cct-scavenger-hunt",
     "storage_bucket": "cct-scavenger-hunt.appspot.com"
   },
