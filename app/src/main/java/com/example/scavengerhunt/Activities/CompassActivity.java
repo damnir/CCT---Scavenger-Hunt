@@ -1,4 +1,4 @@
-package com.example.scavengerhunt;
+package com.example.scavengerhunt.Activities;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,10 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.scavengerhunt.Entities.Compass;
+import com.example.scavengerhunt.R;
+import com.example.scavengerhunt.SOTWFormatter;
 
 
 public class CompassActivity extends AppCompatActivity {

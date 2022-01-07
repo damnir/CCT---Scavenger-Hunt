@@ -5,7 +5,7 @@
     android:id="@+id/huntFOB"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Activities.MainActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -25,6 +25,7 @@
         android:layout_marginTop="64dp"
         android:clickable="true"
         android:foregroundTint="#FF0404"
+        android:onClick="onBeginClick"
         android:scrollbarThumbHorizontal="@color/white"
         android:scrollbarThumbVertical="@color/white"
         app:backgroundTint="#1E88E5"

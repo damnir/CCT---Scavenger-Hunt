@@ -12,7 +12,16 @@
     <string name="sotw_southwest">SW</string>
     <string name="compass_dial" translatable="false" />
     <string name="compass_hands" translatable="false" />
-    <string name="hunt_descrtiption1" translatable="false" >Take your friends and family on an adventure and  explore the sites nearby to find out where some  the artifacts in the museum come from...</string>
-    <string name="hunt_description2" translatable="false" >Work as a team to complete your artifact collection and use the opportunity to explore the historical sites.</string>
+    <string name="hunt_descrtiption1" translatable="false">Take your friends and family on an adventure and  explore the sites nearby to find out where some  the artifacts in the museum come from...</string>
+    <string name="hunt_description2" translatable="false">Work as a team to complete your artifact collection and use the opportunity to explore the historical sites.</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">email</string>
+    <string name="prompt_password">password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Log in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
 
 </resources>

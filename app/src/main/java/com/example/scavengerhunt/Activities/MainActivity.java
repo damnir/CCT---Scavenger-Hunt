@@ -1,9 +1,12 @@
-package com.example.scavengerhunt;
+package com.example.scavengerhunt.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
+import com.example.scavengerhunt.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +17,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Intent intent = new Intent(this, CompassActivity.class);
         //startActivity(intent);
+
+    }
+
+    public void onBeginClick(View v) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
 
     }
 }

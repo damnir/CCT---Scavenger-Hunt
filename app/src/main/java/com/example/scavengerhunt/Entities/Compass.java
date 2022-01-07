@@ -1,4 +1,4 @@
-package com.example.scavengerhunt;
+package com.example.scavengerhunt.Entities;
 
 import android.content.Context;
 import android.hardware.Sensor;
