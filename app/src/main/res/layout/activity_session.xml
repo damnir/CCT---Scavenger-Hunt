@@ -42,18 +42,20 @@
         android:text="Username"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.611"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="95dp"
+        android:layout_marginTop="49dp"
         android:text="Hello"
         android:textSize="30sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/sessionUsername"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/sessionUsername"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView11"
@@ -109,6 +111,8 @@
         android:layout_height="100dp"
         android:layout_marginBottom="16dp"
         android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -140,17 +144,23 @@
             android:fontFamily="sans-serif"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:text="Previous Scavengers"
+            android:text="Other Scavengers"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             app:cornerRadius="0dp"
             app:icon="@drawable/_0trophy"
-            app:iconPadding="-50dp"
+            app:iconPadding="-40dp"
             app:iconTint="#FFFFFF"
             app:iconTintMode="multiply"
             app:strokeColor="#676767"
             app:strokeWidth="1dp" />
 
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="sessionUsername,textView9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

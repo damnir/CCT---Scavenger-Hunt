@@ -4,7 +4,8 @@ import java.util.List;
 
 public class Session {
 
-    private String id;
+    private String sessionId;
+    private User sessionOwner;
     private List<Scavenger> scavengers;
 
     public Session() {

@@ -1,5 +1,7 @@
 package com.example.scavengerhunt.Entities;
 
+import android.util.Log;
+
 import com.example.scavengerhunt.Firebase.Database;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +46,7 @@ public class User {
     }
 
     public String getName() {
+        Log.d("name", "Name: " + this.name);
         return this.name;
     }
 }

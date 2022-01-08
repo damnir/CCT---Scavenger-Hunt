@@ -56,11 +56,15 @@
 
     <LinearLayout
         android:id="@+id/register_layout"
-        android:layout_width="350dp"
-        android:layout_height="449dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="19dp"
         android:layout_marginTop="61dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="123dp"
         android:orientation="vertical"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView">
@@ -110,17 +114,13 @@
             android:textAppearance="@style/Button" />
 
         <Space
-            android:layout_width="match_parent"
-            android:layout_height="34dp" />
-
-        <Space
             android:layout_width="wrap_content"
-            android:layout_height="39dp" />
+            android:layout_height="20dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:onClick="onBackClick"
             android:src="@drawable/abc_vector_test" />
@@ -129,9 +129,11 @@
 
     <LinearLayout
         android:id="@+id/login_layout"
-        android:layout_width="360dp"
-        android:layout_height="414dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="19dp"
         android:layout_marginTop="298dp"
+        android:layout_marginEnd="19dp"
         android:orientation="vertical"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"

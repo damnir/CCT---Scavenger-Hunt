@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("AUTH", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //User.getInstance().setUser(user).addOnCompleteListener(this, )
+                            User.getInstance().setUser(user);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -125,10 +125,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUser(FirebaseUser user) {
-
-    }
-
     public void onSignUpClick(View v) {
         loginLayout.setVisibility(View.GONE);
         registerLayout.setVisibility(View.VISIBLE);
@@ -141,11 +137,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if(user != null) {
+            User.getInstance().setUser(user);
+
+
             Toast.makeText(LoginActivity.this, "Welcome " + User.getInstance().getName(),
                     Toast.LENGTH_SHORT).show();
-
-            User fUser = User.getInstance();
-            fUser.setUser(user);
         }
 
         Intent intent = new Intent(this, SessionActivity.class);
