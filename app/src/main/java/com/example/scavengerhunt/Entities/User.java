@@ -1,18 +1,22 @@
 package com.example.scavengerhunt.Entities;
 
+import com.example.scavengerhunt.Firebase.Database;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class User {
 
-    FirebaseUser fUser;
-    String id;
-    String name;
-    String email;
+    private Database dbRef;
+
+    private FirebaseUser fUser;
+    private String id;
+    private String name;
+    private String email;
 
     private static User INSTANCE = new User();
 
     public User() {
+        dbRef = Database.getInstance();
     };
 
     public static User getInstance() {
@@ -22,6 +26,7 @@ public class User {
     public void setUser(FirebaseUser user) {
         this.id = user.getUid();
         this.email = user.getEmail();
+        dbRef.readUsername(id);
     }
 
     public String getId() {
@@ -32,6 +37,13 @@ public class User {
         return email;
     }
 
+    public FirebaseUser getfUser(){ return fUser; }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public String getName() {
+        return this.name;
+    }
 }

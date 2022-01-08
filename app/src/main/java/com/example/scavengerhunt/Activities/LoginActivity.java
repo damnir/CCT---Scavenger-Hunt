@@ -2,6 +2,7 @@ package com.example.scavengerhunt.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Group;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
+    Database dbRef;
 
     //Login fields
     private EditText emailField;
@@ -34,7 +36,11 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailFieldR;
     private EditText passwordFieldR;
     private EditText passwordFieldR2;
-    LinearLayout registerLayout;
+    private LinearLayout registerLayout;
+
+    //Name fields
+    private EditText nameField;
+    private Group nameGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+        dbRef = Database.getInstance();
 
         emailField = findViewById(R.id.username);
         passwordField = findViewById(R.id.password);
@@ -52,6 +59,9 @@ public class LoginActivity extends AppCompatActivity {
 
         loginLayout = findViewById(R.id.login_layout);
         registerLayout = findViewById(R.id.register_layout);
+
+        nameField = findViewById(R.id.editName);
+        nameGroup = findViewById(R.id.nameGroup);
     }
 
     public void onLoginCLick(View v){
@@ -77,13 +87,13 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("AUTH", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             newUser(user);
-                            updateUI(user);
+                            //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("AUTH", "createUserWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            //updateUI(null);
                         }
                     });
         } catch (Exception e) {
@@ -100,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("AUTH", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            //User.getInstance().setUser(user).addOnCompleteListener(this, )
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -114,6 +125,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void updateUser(FirebaseUser user) {
+
+    }
+
     public void onSignUpClick(View v) {
         loginLayout.setVisibility(View.GONE);
         registerLayout.setVisibility(View.VISIBLE);
@@ -126,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if(user != null) {
-            Toast.makeText(LoginActivity.this, "Welcome " + user.getEmail(),
+            Toast.makeText(LoginActivity.this, "Welcome " + User.getInstance().getName(),
                     Toast.LENGTH_SHORT).show();
 
             User fUser = User.getInstance();
@@ -141,9 +156,21 @@ public class LoginActivity extends AppCompatActivity {
         User fUser = User.getInstance();
         fUser.setUser(user);
 
-        Database database = new Database();
-        database.writeNewUser(fUser);
+        dbRef.writeNewUser(fUser);
 
+        displayName(user);
+    }
+
+    private void displayName(FirebaseUser user) {
+        registerLayout.setVisibility(View.GONE);
+        nameGroup.setVisibility(View.VISIBLE);
+    }
+
+    public void onFinishRegisterClick(View v) {
+        String name = nameField.getText().toString();
+        dbRef.changeName(name);
+        User.getInstance().setName(name);
+        updateUI(mAuth.getCurrentUser());
     }
 
 }

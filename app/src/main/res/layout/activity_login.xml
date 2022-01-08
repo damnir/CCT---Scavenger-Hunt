@@ -14,8 +14,8 @@
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="302dp"
-        android:layout_height="113dp"
-        android:layout_marginTop="84dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="112dp"
         android:foregroundTint="#FF0000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -28,16 +28,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
         android:fontFamily="@font/roboto_thin"
         android:lineSpacingExtra="5dp"
         android:text="Scavenger Hunt"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#323232"
         android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/welcomeText2"
@@ -54,15 +56,14 @@
 
     <LinearLayout
         android:id="@+id/register_layout"
-        android:layout_width="360dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="298dp"
+        android:layout_width="350dp"
+        android:layout_height="449dp"
+        android:layout_marginTop="61dp"
         android:orientation="vertical"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/textView">
 
         <EditText
             android:id="@+id/username2"
@@ -101,7 +102,7 @@
         <Button
             android:id="@+id/login2"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="70dp"
             android:layout_gravity="start"
             android:enabled="true"
             android:onClick="onRegisterClick"
@@ -163,7 +164,7 @@
         <Button
             android:id="@+id/login"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="70dp"
             android:layout_gravity="start"
             android:enabled="true"
             android:onClick="onLoginCLick"
@@ -203,4 +204,52 @@
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/editName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="200dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="98dp"
+        android:layout_marginEnd="175dp"
+        android:text="Your Display Name:"
+        app:layout_constraintBottom_toTopOf="@+id/editName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:layout_marginBottom="73dp"
+        android:clickable="true"
+        android:onClick="onFinishRegisterClick"
+        android:rotation="180"
+        android:src="@drawable/abc_vector_test"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editName" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/nameGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="editName,textView18,floatingActionButton2"
+        tools:layout_editor_absoluteX="208dp"
+        tools:layout_editor_absoluteY="415dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
