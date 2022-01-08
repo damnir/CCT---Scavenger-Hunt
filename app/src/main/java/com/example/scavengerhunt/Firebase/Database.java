@@ -4,10 +4,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.scavengerhunt.Entities.Scavenger;
+import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -50,6 +53,21 @@ public class Database {
                 User.getInstance().setName(name);
             }
         });
+    }
+
+    public void newSession(Session session) {
+
+        mDatabase.child("active_sessions").child(session.getSessionId()).setValue(session);
+
+        //mDatabase.child("active_sessions").child(session.getSessionId())
+        //        .child("owner").setValue(session.getOwnerId());
+
+    }
+
+    public void joinSession(String sessionId, Scavenger scavenger) {
+        //TODO make sure session exists
+
+        mDatabase.child("active_sessions").child(sessionId).child("scavengers").child(scavenger.getUser().getId()).setValue(scavenger);
     }
 
 }

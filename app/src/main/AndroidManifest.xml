@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ScavengerHunt">
-        <activity android:name=".Activities.NewSessionActivity"></activity>
+        <activity android:name=".Activities.JoinActivity"></activity>
+        <activity android:name=".Activities.NewSessionActivity" />
 
         <service
             android:name=".TrackingService"
