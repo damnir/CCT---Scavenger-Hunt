@@ -3,17 +3,17 @@ package com.example.scavengerhunt.Entities;
 public class Scavenger {
 
     private User user;
-    private String activeSessionId;
+    //private String activeSessionId;
     private long aLat;
     private long aLong;
 
     public enum Role {NAVIGATOR, COLLECTOR, SPECTATOR}
     private Role role;
 
-    public Scavenger(User user, String sessionId){
+    public Scavenger(User user){
         this.role = Role.SPECTATOR;
         this.user = user;
-        this.activeSessionId = sessionId;
+        //this.activeSessionId = sessionId;
     }
 
     public User getUser(){

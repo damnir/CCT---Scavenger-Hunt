@@ -19,11 +19,11 @@ public class Session {
         dbRef = Database.getInstance();
 
         this.sessionId = id;
-        this.sessionOwner = User.getInstance();
+        //this.sessionOwner = User.getInstance();
 
-        this.scavengers.add(new Scavenger(sessionOwner, sessionId));
+        //this.scavengers.add(new Scavenger(sessionOwner, sessionId));
 
-        dbRef.newSession(this);
+        //dbRef.newSession(this);
     }
 
     public void addScavenger(Scavenger scavenger) {
@@ -31,6 +31,10 @@ public class Session {
     }
 
     public User getOwner() { return sessionOwner; }
+
+    public void setOwner(User user) {
+        this.sessionOwner = user;
+    }
 
     public String getSessionId() { return sessionId; }
 

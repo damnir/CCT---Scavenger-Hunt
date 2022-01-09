@@ -14,6 +14,7 @@ public class User {
     private String id;
     private String name;
     private String email;
+    private String activeSessionId;
 
     private static User INSTANCE = new User();
 
@@ -48,5 +49,13 @@ public class User {
     public String getName() {
         Log.d("name", "Name: " + this.name);
         return this.name;
+    }
+
+    public void setActiveSessionId(String sessionId) {
+        this.activeSessionId = sessionId;
+    }
+
+    public String getActiveSessionId() {
+        return activeSessionId;
     }
 }

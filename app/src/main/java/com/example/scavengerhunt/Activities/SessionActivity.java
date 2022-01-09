@@ -30,6 +30,7 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     public void newSessionClick(View v) {
+
         Intent intent = new Intent(this, NewSessionActivity.class);
         startActivity(intent);
     }

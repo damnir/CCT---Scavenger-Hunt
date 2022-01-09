@@ -66,8 +66,9 @@ public class Database {
 
     public void joinSession(String sessionId, Scavenger scavenger) {
         //TODO make sure session exists
-
+        //User.getInstance().setActiveSessionId(sessionId);
         mDatabase.child("active_sessions").child(sessionId).child("scavengers").child(scavenger.getUser().getId()).setValue(scavenger);
+
     }
 
 }
