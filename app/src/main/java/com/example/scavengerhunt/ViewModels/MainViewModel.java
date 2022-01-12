@@ -1,4 +1,4 @@
-package com.example.scavengerhunt.ui.main;
+package com.example.scavengerhunt.ViewModels;
 
 import androidx.lifecycle.ViewModel;
 

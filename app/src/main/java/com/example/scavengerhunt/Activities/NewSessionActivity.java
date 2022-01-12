@@ -1,6 +1,5 @@
 package com.example.scavengerhunt.Activities;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -11,18 +10,14 @@ import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.R;
-import com.example.scavengerhunt.ui.main.SessionViewModel;
+import com.example.scavengerhunt.ViewModels.SessionViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.annotations.Nullable;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
-import java.util.Locale;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 public class NewSessionActivity extends AppCompatActivity {
 
@@ -48,7 +43,7 @@ public class NewSessionActivity extends AppCompatActivity {
                 ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(SessionViewModel.class);
 
 
-        LiveData<DataSnapshot> liveData = viewModel.getDataSnapshotLiveData();
+        LiveData<DataSnapshot> liveData = viewModel.getUsersLiveDataSS();
 
         liveData.observe(this, new Observer<DataSnapshot>() {
             @Override

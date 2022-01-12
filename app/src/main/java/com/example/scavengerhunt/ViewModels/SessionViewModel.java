@@ -1,4 +1,4 @@
-package com.example.scavengerhunt.ui.main;
+package com.example.scavengerhunt.ViewModels;
 
 import android.app.Application;
 import android.util.Log;
@@ -22,11 +22,13 @@ public class SessionViewModel extends ViewModel {
     private static final DatabaseReference SESSION_USERS_REF =
             FirebaseDatabase.getInstance().getReference("/active_sessions/" + User.getInstance().getActiveSessionId() + "/scavengers/");
 
-    private final FirebaseQueryLiveData liveData = new FirebaseQueryLiveData(SESSION_USERS_REF);
+    private final FirebaseQueryLiveData usersLiveData = new FirebaseQueryLiveData(SESSION_USERS_REF);
 
     @NonNull
-    public LiveData<DataSnapshot> getDataSnapshotLiveData() {
-        return liveData;
+    public LiveData<DataSnapshot> getUsersLiveDataSS() {
+        return usersLiveData;
     }
+
+
 }
 

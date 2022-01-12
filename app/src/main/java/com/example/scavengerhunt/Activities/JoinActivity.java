@@ -14,7 +14,7 @@ import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.User;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.R;
-import com.example.scavengerhunt.ui.main.SessionViewModel;
+import com.example.scavengerhunt.ViewModels.SessionViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.annotations.Nullable;
 
@@ -38,7 +38,7 @@ public class JoinActivity extends AppCompatActivity {
                 ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(SessionViewModel.class);
 
 
-        LiveData<DataSnapshot> liveData = viewModel.getDataSnapshotLiveData();
+        LiveData<DataSnapshot> liveData = viewModel.getUsersLiveDataSS();
 
         liveData.observe(this, new Observer<DataSnapshot>() {
             @Override
