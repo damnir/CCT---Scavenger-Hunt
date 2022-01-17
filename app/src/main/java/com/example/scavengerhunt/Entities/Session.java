@@ -7,6 +7,8 @@ import java.util.List;
 
 public class Session {
 
+    private static Session INSTANCE = new Session("");
+
     private String sessionId;
     private User sessionOwner;
     private List<Scavenger> scavengers;
@@ -18,7 +20,7 @@ public class Session {
 
         dbRef = Database.getInstance();
 
-        this.sessionId = id;
+        //this.sessionId = id;
         //this.sessionOwner = User.getInstance();
 
         //this.scavengers.add(new Scavenger(sessionOwner, sessionId));
@@ -26,8 +28,24 @@ public class Session {
         //dbRef.newSession(this);
     }
 
+    public Session(){
+
+    }
+
+    public static Session getInstance() {
+        return INSTANCE;
+    }
+
+    public void setSessionId(String id){
+        this.sessionId = id;
+    }
+
     public void addScavenger(Scavenger scavenger) {
         scavengers.add(scavenger);
+    }
+
+    public void setScavengers(List<Scavenger> newScavengers) {
+        this.scavengers = newScavengers;
     }
 
     public User getOwner() { return sessionOwner; }

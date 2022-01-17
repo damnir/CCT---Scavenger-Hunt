@@ -106,7 +106,7 @@ public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.DataView
                 distanceText.setText( Math.round((run.getDistance()/1000) * 100.00)/100.00 + "km" );
                 dateText.setText(run.getDate());*/
 
-                name.setText(scavenger.getUserName());
+                //name.setText(scavenger.getUserName());
                 role.setText(scavenger.getRole());
 
                 //activate the button if the run is marked as favourite

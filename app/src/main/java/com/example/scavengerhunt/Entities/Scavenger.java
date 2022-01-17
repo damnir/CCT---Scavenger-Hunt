@@ -7,37 +7,34 @@ public class Scavenger {
     private long aLat;
     private long aLong;
 
-    public enum Role {NAVIGATOR, COLLECTOR, SPECTATOR}
-    private Role role;
+    //public enum Role {NAVIGATOR, COLLECTOR, SPECTATOR}
+    public String role;
+    //private Role role;
 
     public Scavenger(User user){
-        this.role = Role.SPECTATOR;
+        this.role = "Spectator";
         this.user = user;
         //this.activeSessionId = sessionId;
+    }
+
+    public Scavenger(){
+
     }
 
     public User getUser(){
         return user;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
-    public String getUserName(){
+    /*public String getUserName(){
         return User.getInstance().getName();
-    }
+    }*/
 
     public String getRole(){
-        switch (role) {
-            case COLLECTOR:
-                return "Collector";
-            case NAVIGATOR:
-                return "Navigator";
-            case SPECTATOR:
-                return "Spectator";
-        }
-        return null;
+        return role;
     }
 
 

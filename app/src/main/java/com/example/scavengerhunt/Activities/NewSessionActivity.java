@@ -33,7 +33,8 @@ public class NewSessionActivity extends AppCompatActivity {
 
         String newSessionId = generateSessionId();
         User.getInstance().setActiveSessionId(newSessionId);
-        session = new Session(newSessionId);
+        session = Session.getInstance();
+        session.setSessionId(newSessionId);
         session.setOwner(User.getInstance());
         session.addScavenger(new Scavenger(User.getInstance()));
 
@@ -55,6 +56,7 @@ public class NewSessionActivity extends AppCompatActivity {
                     //Float price = dataSnapshot.child("price").getValue(Float.class);
                     //tvPrice.setText(String.format(Locale.getDefault(), "%.2f", price));
                     Log.d("ONCHANGED: ", String.valueOf(dataSnapshot));
+                    //viewModel.formatSession(dataSnapshot);
                 }
             }
         });

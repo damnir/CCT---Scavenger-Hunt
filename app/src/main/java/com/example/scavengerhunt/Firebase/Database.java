@@ -7,7 +7,10 @@ import androidx.annotation.NonNull;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -20,6 +23,8 @@ public class Database {
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
+    private Session session = Session.getInstance();
+
 
     public Database() {
 
@@ -64,11 +69,23 @@ public class Database {
 
     }
 
-    public void joinSession(String sessionId, Scavenger scavenger) {
+    public void joinSession(String sessionId) {
         //TODO make sure session exists
         //User.getInstance().setActiveSessionId(sessionId);
-        mDatabase.child("active_sessions").child(sessionId).child("scavengers").child(scavenger.getUser().getId()).setValue(scavenger);
+        //mDatabase.child("active_sessions").child(sessionId).child("scavengers").child(scavenger.getUser().getId()).setValue(scavenger);
+        mDatabase.child("active_sessions").child(sessionId).get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("firebase", "Error getting data", task.getException());
+            }
+            else {
+                session = task.getResult().getValue(Session.class);
+            }
+        });
+        Log.d("SC", "Session ID: " + session.getSessionId());
+        for (Scavenger s: session.getScavengers() ){
+            Log.d("SC", "Scavengers: " + s.getUser().getName() + " role: " + s.getRole());
 
+        }
     }
 
 }

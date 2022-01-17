@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.scavengerhunt.Entities.Scavenger;
+import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.R;
@@ -22,6 +23,7 @@ public class JoinActivity extends AppCompatActivity {
 
     private Database dbRef;
     private EditText sessionInput;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class JoinActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //dbRef.
     }
 
     public void joinSessionClick(View v) {
@@ -61,7 +65,7 @@ public class JoinActivity extends AppCompatActivity {
         Scavenger scavenger = new Scavenger(User.getInstance());
         User.getInstance().setActiveSessionId(id);
 
-        dbRef.joinSession(id, scavenger);
+        dbRef.joinSession(id);
     }
 
 
