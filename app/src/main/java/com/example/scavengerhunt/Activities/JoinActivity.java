@@ -65,7 +65,7 @@ public class JoinActivity extends AppCompatActivity {
         Scavenger scavenger = new Scavenger(User.getInstance());
         User.getInstance().setActiveSessionId(id);
 
-        dbRef.joinSession(id);
+        dbRef.joinSession(id, scavenger);
     }
 
 

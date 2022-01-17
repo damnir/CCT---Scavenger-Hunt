@@ -22,7 +22,7 @@ public class SessionViewModel extends ViewModel {
     private Session session = Session.getInstance();
 
     private static final DatabaseReference SESSION_USERS_REF =
-            FirebaseDatabase.getInstance().getReference("/active_sessions/" + User.getInstance().getActiveSessionId() + "/scavengers/");
+            FirebaseDatabase.getInstance().getReference("/active_sessions/" + User.getInstance().getActiveSessionId() + "/");
 
     private final FirebaseQueryLiveData usersLiveData = new FirebaseQueryLiveData(SESSION_USERS_REF);
 
@@ -32,17 +32,14 @@ public class SessionViewModel extends ViewModel {
     }
 
     public void formatSession(DataSnapshot dataSnapshot) {
-        Log.d("ONCHANGED", "" + dataSnapshot.getValue(Session.class));
-        /*session = dataSnapshot.getValue(Session.class);
-        for (Scavenger s : session.getScavengers() ) {
-            Log.d("ONCHANGED", s.getRole() + " " + s.getUserName());
-    */}
-
-
-    public void joinSession(String sessionId) {
-
-
+        //Log.d("ONCHANGED", "" + dataSnapshot.getValue(Session.class));
+        session = dataSnapshot.getValue(Session.class);
+        for (Scavenger s : session.getScavengers()) {
+            Log.d("ONCHANGED", s.getRole() + " " + s.getUser().getName());
+        }
     }
+
+
 }
 
 

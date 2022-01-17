@@ -69,9 +69,9 @@ public class Database {
 
     }
 
-    public void joinSession(String sessionId) {
+    public void joinSession(String sessionId, Scavenger scavenger) {
         //TODO make sure session exists
-        //User.getInstance().setActiveSessionId(sessionId);
+        User.getInstance().setActiveSessionId(sessionId);
         //mDatabase.child("active_sessions").child(sessionId).child("scavengers").child(scavenger.getUser().getId()).setValue(scavenger);
         mDatabase.child("active_sessions").child(sessionId).get().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
@@ -79,13 +79,21 @@ public class Database {
             }
             else {
                 session = task.getResult().getValue(Session.class);
+                session.addScavenger(new Scavenger(User.getInstance()));
+                updateSession();
+                //--------------------------------------------------------------
+                Log.d("SC", "Session ID: " + session.getSessionId());
+                for (Scavenger s: session.getScavengers() ){
+                    Log.d("SC", "Scavengers: " + s.getUser().getName() + " role: " + s.getRole());
+                }
+                //--------------------------------------------------------------
             }
         });
-        Log.d("SC", "Session ID: " + session.getSessionId());
-        for (Scavenger s: session.getScavengers() ){
-            Log.d("SC", "Scavengers: " + s.getUser().getName() + " role: " + s.getRole());
+    }
 
-        }
+    public void updateSession() {
+        mDatabase.child("active_sessions").child(
+                User.getInstance().getActiveSessionId()).setValue(session);
     }
 
 }

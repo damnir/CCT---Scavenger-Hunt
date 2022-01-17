@@ -46,17 +46,15 @@ public class NewSessionActivity extends AppCompatActivity {
 
         LiveData<DataSnapshot> liveData = viewModel.getUsersLiveDataSS();
 
-        liveData.observe(this, new Observer<DataSnapshot>() {
-            @Override
-            public void onChanged(@Nullable DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    // update the UI here with values in the snapshot
-                    //String ticker = dataSnapshot.child("ticker").getValue(String.class);
-                    //tvTicker.setText(ticker);
-                    //Float price = dataSnapshot.child("price").getValue(Float.class);
-                    //tvPrice.setText(String.format(Locale.getDefault(), "%.2f", price));
-                    Log.d("ONCHANGED: ", String.valueOf(dataSnapshot));
-                    //viewModel.formatSession(dataSnapshot);
+        liveData.observe(this, dataSnapshot -> {
+            if (dataSnapshot != null) {
+                //Log.d("ONCHANGED: ", String.valueOf(dataSnapshot));
+                //viewModel.formatSession(dataSnapshot);
+                session =  dataSnapshot.getValue(Session.class);
+
+                Log.d("SC", "Session ID: " + session.getSessionId());
+                for (Scavenger s: session.getScavengers() ){
+                    Log.d("SC", "Scavengers: " + s.getUser().getName() + " role: " + s.getRole());
                 }
             }
         });
