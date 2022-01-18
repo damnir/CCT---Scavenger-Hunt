@@ -169,4 +169,16 @@ public class LoginActivity extends AppCompatActivity {
         updateUI(mAuth.getCurrentUser());
     }
 
+    //DEBUGGING----------------------------------------------------
+
+    public void adminLogin(View v){
+        firebaseLogin("admin@admin.com", "admin123");
+    }
+
+    public void testLogin(View v){
+        firebaseLogin("test@admin.com", "admin123");
+    }
+
+    //---------------------------------------------------------------
+
 }
