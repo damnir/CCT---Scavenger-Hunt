@@ -21,13 +21,14 @@ public class SessionViewModel extends ViewModel {
     //private static String sessionId = User.getInstance().getActiveSessionId();
     private Session session = Session.getInstance();
 
-    private static final DatabaseReference SESSION_USERS_REF =
+    private static final DatabaseReference SESSION_REF =
             FirebaseDatabase.getInstance().getReference("/active_sessions/" + User.getInstance().getActiveSessionId() + "/");
 
-    private final FirebaseQueryLiveData usersLiveData = new FirebaseQueryLiveData(SESSION_USERS_REF);
+    private final FirebaseQueryLiveData usersLiveData = new FirebaseQueryLiveData(SESSION_REF);
 
     @NonNull
     public LiveData<DataSnapshot> getUsersLiveDataSS() {
+
         return usersLiveData;
     }
 

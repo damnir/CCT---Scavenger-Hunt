@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.R;
+import com.example.scavengerhunt.SessionAdapter;
 import com.example.scavengerhunt.ViewModels.SessionViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.annotations.Nullable;
@@ -23,6 +26,7 @@ public class NewSessionActivity extends AppCompatActivity {
 
     private Session session;
     private Database dbRef;
+    private SessionAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +44,15 @@ public class NewSessionActivity extends AppCompatActivity {
 
         dbRef.newSession(session);
 
+        adapter = new SessionAdapter(this);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         SessionViewModel viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(SessionViewModel.class);
-
 
         LiveData<DataSnapshot> liveData = viewModel.getUsersLiveDataSS();
 
@@ -51,6 +61,7 @@ public class NewSessionActivity extends AppCompatActivity {
                 //Log.d("ONCHANGED: ", String.valueOf(dataSnapshot));
                 //viewModel.formatSession(dataSnapshot);
                 session =  dataSnapshot.getValue(Session.class);
+                adapter.setData(session.getScavengers());
 
                 Log.d("SC", "Session ID: " + session.getSessionId());
                 for (Scavenger s: session.getScavengers() ){
