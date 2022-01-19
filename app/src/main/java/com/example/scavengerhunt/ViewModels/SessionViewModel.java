@@ -21,14 +21,14 @@ public class SessionViewModel extends ViewModel {
     //private static String sessionId = User.getInstance().getActiveSessionId();
     private Session session = Session.getInstance();
 
-    private static final DatabaseReference SESSION_REF =
+    private DatabaseReference SESSION_REF =
             FirebaseDatabase.getInstance().getReference("/active_sessions/" + User.getInstance().getActiveSessionId() + "/");
 
-    private final FirebaseQueryLiveData usersLiveData = new FirebaseQueryLiveData(SESSION_REF);
+    private FirebaseQueryLiveData usersLiveData = new FirebaseQueryLiveData(SESSION_REF);
 
     @NonNull
     public LiveData<DataSnapshot> getUsersLiveDataSS() {
-
+        Log.d("SC", "VIEMODEL DEBUG: " + SESSION_REF);
         return usersLiveData;
     }
 
@@ -38,6 +38,10 @@ public class SessionViewModel extends ViewModel {
         for (Scavenger s : session.getScavengers()) {
             Log.d("ONCHANGED", s.getRole() + " " + s.getUser().getName());
         }
+    }
+
+    public void updateDBReference() {
+        SESSION_REF = FirebaseDatabase.getInstance().getReference("/active_sessions/" + User.getInstance().getActiveSessionId() + "/");
     }
 
 

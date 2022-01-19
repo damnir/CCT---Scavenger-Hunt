@@ -23,6 +23,9 @@ public class User {
     };
 
     public static User getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new User();
+        }
         return INSTANCE;
     }
 

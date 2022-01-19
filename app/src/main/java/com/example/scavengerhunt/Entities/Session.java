@@ -32,7 +32,15 @@ public class Session {
 
     }
 
+    public void replaceInstance(Session instance) {
+        INSTANCE = instance;
+    }
+
     public static Session getInstance() {
+        if (INSTANCE == null)
+        {
+            INSTANCE = new Session();
+        }
         return INSTANCE;
     }
 

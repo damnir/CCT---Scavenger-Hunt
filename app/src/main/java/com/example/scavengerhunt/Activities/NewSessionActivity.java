@@ -35,14 +35,12 @@ public class NewSessionActivity extends AppCompatActivity {
 
         dbRef = Database.getInstance();
 
-        String newSessionId = generateSessionId();
-        User.getInstance().setActiveSessionId(newSessionId);
-        session = Session.getInstance();
-        session.setSessionId(newSessionId);
-        session.setOwner(User.getInstance());
-        session.addScavenger(new Scavenger(User.getInstance()));
 
-        dbRef.newSession(session);
+        session = Session.getInstance();
+        Log.d("SC", "Session ID 222: " + session.getSessionId());
+        Log.d("SC", "Session ID 222USER: " + User.getInstance().getActiveSessionId());
+
+
 
         adapter = new SessionAdapter(this);
 
@@ -54,19 +52,27 @@ public class NewSessionActivity extends AppCompatActivity {
         SessionViewModel viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(SessionViewModel.class);
 
+        viewModel.updateDBReference();
+
         LiveData<DataSnapshot> liveData = viewModel.getUsersLiveDataSS();
 
         liveData.observe(this, dataSnapshot -> {
             if (dataSnapshot != null) {
                 //Log.d("ONCHANGED: ", String.valueOf(dataSnapshot));
                 //viewModel.formatSession(dataSnapshot);
-                session =  dataSnapshot.getValue(Session.class);
-                adapter.setData(session.getScavengers());
 
-                Log.d("SC", "Session ID: " + session.getSessionId());
-                for (Scavenger s: session.getScavengers() ){
-                    Log.d("SC", "Scavengers: " + s.getUser().getName() + " role: " + s.getRole());
-                }
+                    Log.d("SC", "Session ID BEFORE NULL: " + session.getSessionId());
+
+                    Log.d("SC", "DATASNAPSHOT!?!?!?: " + dataSnapshot.toString() + "KEY:" + dataSnapshot.getKey());
+                    session =  dataSnapshot.getValue(Session.class);
+                    adapter.setData(session.getScavengers());
+
+                    Log.d("SC", "Session ID: " + session.getSessionId());
+                    for (Scavenger s: session.getScavengers() ){
+                        Log.d("SC", "Scavengers: " + s.getUser().getName() + " role: " + s.getRole());
+                    }
+
+
             }
         });
     }

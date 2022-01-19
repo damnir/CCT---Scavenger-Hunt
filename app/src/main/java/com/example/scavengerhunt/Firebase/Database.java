@@ -2,20 +2,13 @@ package com.example.scavengerhunt.Firebase;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Database {
 
@@ -24,6 +17,7 @@ public class Database {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private Session session = Session.getInstance();
+    //private User user = User.getInstance();
 
 
     public Database() {
@@ -80,6 +74,8 @@ public class Database {
             else {
                 session = task.getResult().getValue(Session.class);
                 session.addScavenger(new Scavenger(User.getInstance()));
+                //user.setActiveSessionId(sessionId);
+
                 updateSession();
                 //--------------------------------------------------------------
                 Log.d("SC", "Session ID: " + session.getSessionId());
@@ -94,6 +90,15 @@ public class Database {
     public void updateSession() {
         mDatabase.child("active_sessions").child(
                 User.getInstance().getActiveSessionId()).setValue(session);
+
+        Log.d("SC", "UPDATE: Session ID: " + session.getSessionId());
+        for (Scavenger s: session.getScavengers() ){
+            Log.d("SC", "UPDATE: Scavengers: " + s.getUser().getName() + " role: " + s.getRole());
+        }
+    }
+
+    public Session replaceInstace() {
+        return session;
     }
 
 }

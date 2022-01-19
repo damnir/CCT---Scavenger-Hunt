@@ -9,19 +9,29 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.scavengerhunt.Entities.Scavenger;
+import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
+import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.R;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class SessionActivity extends AppCompatActivity {
 
     TextView name;
+    private Session session;
+    private Database dbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session);
+
+        dbRef = Database.getInstance();
+        session = Session.getInstance();
+
 
         Log.d("name", "Name on create: " + User.getInstance().getName());
 
@@ -30,7 +40,13 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     public void newSessionClick(View v) {
+        String newSessionId = generateSessionId();
+        User.getInstance().setActiveSessionId(newSessionId);
+        session.setSessionId(newSessionId);
+        session.setOwner(User.getInstance());
+        session.addScavenger(new Scavenger(User.getInstance()));
 
+        dbRef.newSession(session);
         Intent intent = new Intent(this, NewSessionActivity.class);
         startActivity(intent);
     }
@@ -40,6 +56,12 @@ public class SessionActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public String generateSessionId() {
+        Random rand = new Random();
+        String id = "";
+        for(int i = 0; i < 6; i++) id += rand.nextInt(9);
+        return id;
+    }
 
 
 }

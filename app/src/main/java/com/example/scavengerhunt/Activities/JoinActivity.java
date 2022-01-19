@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +21,8 @@ import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.SessionAdapter;
 import com.example.scavengerhunt.ViewModels.SessionViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.annotations.Nullable;
 
@@ -26,12 +30,14 @@ public class JoinActivity extends AppCompatActivity {
 
     private Database dbRef;
     private EditText sessionInput;
-
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
+
+        session = Session.getInstance();
 
         //Scavenger scavenger = new Scavenger(User.getInstance());
         dbRef = Database.getInstance();
@@ -53,6 +59,8 @@ public class JoinActivity extends AppCompatActivity {
                     //tvTicker.setText(ticker);
                     //Float price = dataSnapshot.child("price").getValue(Float.class);
                     //tvPrice.setText(String.format(Locale.getDefault(), "%.2f", price));
+                    session = dataSnapshot.getValue(Session.class);
+
                     Log.d("ONCHANGED: ", String.valueOf(dataSnapshot));
 
                 }
@@ -62,14 +70,33 @@ public class JoinActivity extends AppCompatActivity {
         //dbRef.
     }
 
+
     public void joinSessionClick(View v) {
         String id = sessionInput.getText().toString();
-
+        User.getInstance().setActiveSessionId(id);
         Scavenger scavenger = new Scavenger(User.getInstance());
         User.getInstance().setActiveSessionId(id);
-
         dbRef.joinSession(id, scavenger);
+
+        changeActivity();
+
     }
+
+    public void changeActivity() {
+        Session session = Session.getInstance();
+        session.replaceInstance(dbRef.replaceInstace());
+        Log.d("SC", "Session ID: " + session.getSessionId());
+        for (Scavenger s: session.getScavengers() ){
+            Log.d("SC", "Scavengers: " + s.getUser().getName() + " role: " + s.getRole());
+        }
+
+        Log.d("SC", "USER JOIN: " + User.getInstance().getActiveSessionId());
+
+        Intent intent = new Intent(this, NewSessionActivity.class);
+        startActivity(intent);
+    }
+
+
 
 
 
