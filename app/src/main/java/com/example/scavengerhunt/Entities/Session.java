@@ -59,16 +59,16 @@ public class Session {
         this.scavengers = newScavengers;
     }
 
-    public User getOwner() { return sessionOwner; }
+    public User getOwner() { return this.sessionOwner; }
 
     public void setOwner(User user) {
         this.sessionOwner = user;
     }
 
-    public String getSessionId() { return sessionId; }
+    public String getSessionId() { return this.sessionId; }
 
     public List<Scavenger> getScavengers() {
-        return scavengers;
+        return this.scavengers;
     }
 
     public void updateRole(int scavengerId, String role) {

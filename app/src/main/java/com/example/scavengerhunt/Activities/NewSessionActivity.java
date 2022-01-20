@@ -20,6 +20,7 @@ import com.google.firebase.database.annotations.Nullable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -29,19 +30,17 @@ public class NewSessionActivity extends AppCompatActivity {
     private Database dbRef;
     private SessionAdapter adapter;
 
+    TextView sessionIdText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_session);
 
         dbRef = Database.getInstance();
-
-
         session = Session.getInstance();
-        Log.d("SC", "Session ID 222: " + session.getSessionId());
-        Log.d("SC", "Session ID 222USER: " + User.getInstance().getActiveSessionId());
 
-
+        sessionIdText = findViewById(R.id.newSessId);
 
         adapter = new SessionAdapter(this);
 
@@ -59,30 +58,11 @@ public class NewSessionActivity extends AppCompatActivity {
 
         liveData.observe(this, dataSnapshot -> {
             if (dataSnapshot != null) {
-                //Log.d("ONCHANGED: ", String.valueOf(dataSnapshot));
-                //viewModel.formatSession(dataSnapshot);
-
-                    Log.d("SC", "Session ID BEFORE NULL: " + session.getSessionId());
-
-                    Log.d("SC", "DATASNAPSHOT!?!?!?: " + dataSnapshot.toString() + "KEY:" + dataSnapshot.getKey());
                     session =  dataSnapshot.getValue(Session.class);
                     adapter.setData(session.getScavengers());
-
-                    Log.d("SC", "Session ID: " + session.getSessionId());
-                    for (Scavenger s: session.getScavengers() ){
-                        Log.d("SC", "Scavengers: " + s.getUser().getName() + " role: " + s.getRole());
-                    }
-
-
+                    sessionIdText.setText(session.getSessionId());
             }
         });
-    }
-
-    public String generateSessionId() {
-        Random rand = new Random();
-        String id = "";
-        for(int i = 0; i < 6; i++) id += rand.nextInt(9);
-        return id;
     }
 
     public void onNavigatorClick(View v) {
