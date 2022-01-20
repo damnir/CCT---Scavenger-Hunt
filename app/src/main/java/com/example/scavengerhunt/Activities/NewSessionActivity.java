@@ -2,27 +2,22 @@ package com.example.scavengerhunt.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
-import com.example.scavengerhunt.Entities.User;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.SessionAdapter;
 import com.example.scavengerhunt.ViewModels.SessionViewModel;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.annotations.Nullable;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
-import java.util.Random;
 
 public class NewSessionActivity extends AppCompatActivity {
 
@@ -75,6 +70,11 @@ public class NewSessionActivity extends AppCompatActivity {
 
     public void onStoryClick(View v) {
         session.updateRole(Scavenger.getInstance().getScavengerId(), "Story Teller");
+    }
+
+    public void onStartClick(View v) {
+        Intent intent = new Intent(this, CompassActivity.class);
+        startActivity(intent);
     }
 
 

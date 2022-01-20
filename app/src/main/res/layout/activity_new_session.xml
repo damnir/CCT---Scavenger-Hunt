@@ -6,6 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".Activities.NewSessionActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="163dp"
+        android:layout_marginEnd="163dp"
+        android:layout_marginBottom="97dp"
+        android:clickable="true"
+        android:foregroundTint="#FF0404"
+        android:onClick="onStartClick"
+        android:scrollbarThumbHorizontal="@color/white"
+        android:scrollbarThumbVertical="@color/white"
+        app:backgroundTint="#1E88E5"
+        app:fabCustomSize="85dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+        app:maxImageSize="45dp"
+        app:rippleColor="#C8C1C1"
+        app:srcCompat="@drawable/dog_paw_print_png_dog_paw_11563597387zsw1pcwdge" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="171dp"
+        android:layout_marginEnd="171dp"
+        android:text="Begin Hunt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton5" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
