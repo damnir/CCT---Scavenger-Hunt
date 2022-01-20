@@ -17,6 +17,7 @@ public class Database {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private Session session = Session.getInstance();
+    public String test = "test";
     //private User user = User.getInstance();
 
 
@@ -73,7 +74,7 @@ public class Database {
             }
             else {
                 session = task.getResult().getValue(Session.class);
-                session.addScavenger(new Scavenger(User.getInstance()));
+                session.addScavenger(Scavenger.getInstance());
                 //user.setActiveSessionId(sessionId);
 
                 updateSession();
@@ -95,6 +96,22 @@ public class Database {
         for (Scavenger s: session.getScavengers() ){
             Log.d("SC", "UPDATE: Scavengers: " + s.getUser().getName() + " role: " + s.getRole());
         }
+    }
+
+    public void updateRole(String sessionId, int scavengerId, String role) {
+        mDatabase.child("active_sessions").child(sessionId).child("scavengers")
+                .child(String.valueOf(Scavenger.getInstance().getScavengerId())).get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("firebase", "Error getting data", task.getException());
+            }
+            else {
+                Log.d("firebase", "Scavenger ID: " + task.getResult().getValue().toString());
+            }
+        });
+
+        mDatabase.child("active_sessions").child(sessionId).child("scavengers")
+                .child(String.valueOf(Scavenger.getInstance().getScavengerId())).child("role").setValue(role);
+
     }
 
     public Session replaceInstace() {

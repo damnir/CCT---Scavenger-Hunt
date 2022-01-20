@@ -74,7 +74,9 @@ public class JoinActivity extends AppCompatActivity {
     public void joinSessionClick(View v) {
         String id = sessionInput.getText().toString();
         User.getInstance().setActiveSessionId(id);
-        Scavenger scavenger = new Scavenger(User.getInstance());
+        Scavenger scavenger = Scavenger.getInstance();
+        scavenger.setUser(User.getInstance());
+
         User.getInstance().setActiveSessionId(id);
         dbRef.joinSession(id, scavenger);
 

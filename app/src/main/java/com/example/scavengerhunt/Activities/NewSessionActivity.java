@@ -19,6 +19,7 @@ import com.google.firebase.database.annotations.Nullable;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import java.util.Random;
 
@@ -77,12 +78,23 @@ public class NewSessionActivity extends AppCompatActivity {
         });
     }
 
-
     public String generateSessionId() {
         Random rand = new Random();
         String id = "";
         for(int i = 0; i < 6; i++) id += rand.nextInt(9);
         return id;
+    }
+
+    public void onNavigatorClick(View v) {
+        session.updateRole(Scavenger.getInstance().getScavengerId(), "Navigator");
+    }
+
+    public void onDiscovererClick(View v) {
+        session.updateRole(Scavenger.getInstance().getScavengerId(), "Discoverer");
+    }
+
+    public void onStoryClick(View v) {
+        session.updateRole(Scavenger.getInstance().getScavengerId(), "Story Teller");
     }
 
 

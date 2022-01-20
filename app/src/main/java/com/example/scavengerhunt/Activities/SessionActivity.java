@@ -44,7 +44,10 @@ public class SessionActivity extends AppCompatActivity {
         User.getInstance().setActiveSessionId(newSessionId);
         session.setSessionId(newSessionId);
         session.setOwner(User.getInstance());
-        session.addScavenger(new Scavenger(User.getInstance()));
+
+        Scavenger scavenger = Scavenger.getInstance();
+        scavenger.setUser(User.getInstance());
+        session.addScavenger(scavenger);
 
         dbRef.newSession(session);
         Intent intent = new Intent(this, NewSessionActivity.class);
