@@ -73,7 +73,7 @@ public class NewSessionActivity extends AppCompatActivity {
     }
 
     public void onStartClick(View v) {
-        Intent intent = new Intent(this, CompassActivity.class);
+        Intent intent = new Intent(this, HuntActivity.class);
         startActivity(intent);
     }
 
