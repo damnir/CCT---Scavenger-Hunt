@@ -60,7 +60,8 @@
         app:layout_constraintTop_toTopOf="@+id/textView7"
         app:maxImageSize="45dp"
         app:rippleColor="#C8C1C1"
-        app:srcCompat="@drawable/dog_paw_print_png_dog_paw_11563597387zsw1pcwdge" />
+        app:srcCompat="@drawable/dog_paw_print_png_dog_paw_11563597387zsw1pcwdge"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/textView6"

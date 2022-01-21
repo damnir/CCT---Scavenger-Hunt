@@ -105,11 +105,16 @@ public class TrackingService extends Service {
 
     }
 
+    public Location getLastLocation() {
+        return lastLocation;
+    }
+
     //location tracked implementation
     public class LocationTracker implements LocationListener {
 
         @Override
         public void onLocationChanged(Location location) {
+            lastLocation = location;
             //on location changed, insert the new location if status = tracking and update last known location
             /*if(status == Status.TRACKING) {
                 Log.d("g53mdp", location.getLatitude() + " " + location.getLongitude());
