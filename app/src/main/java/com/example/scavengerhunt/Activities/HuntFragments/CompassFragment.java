@@ -12,10 +12,6 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Context;
-
-
-import com.example.scavengerhunt.Activities.HuntActivity;
 import com.example.scavengerhunt.Entities.Compass;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.SOTWFormatter;
