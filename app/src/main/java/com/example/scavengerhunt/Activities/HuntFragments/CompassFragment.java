@@ -20,6 +20,22 @@ import com.example.scavengerhunt.Entities.Compass;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.SOTWFormatter;
 
+/*Compass Activity
+MIT License
+
+Copyright (c) 2017 Viacheslav Iutin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+ */
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CompassFragment#newInstance} factory method to

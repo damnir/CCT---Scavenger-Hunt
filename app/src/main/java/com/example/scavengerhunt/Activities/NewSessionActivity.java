@@ -1,6 +1,7 @@
 package com.example.scavengerhunt.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,10 +15,13 @@ import com.example.scavengerhunt.SessionAdapter;
 import com.example.scavengerhunt.ViewModels.SessionViewModel;
 import com.google.firebase.database.DataSnapshot;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class NewSessionActivity extends AppCompatActivity {
 
@@ -73,6 +77,12 @@ public class NewSessionActivity extends AppCompatActivity {
     }
 
     public void onStartClick(View v) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast toast=Toast.makeText(getApplicationContext(),"Allow location permissions for this feature to work",Toast.LENGTH_LONG);
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            toast.show();
+            return;
+        }
         Intent intent = new Intent(this, HuntActivity.class);
         startActivity(intent);
     }

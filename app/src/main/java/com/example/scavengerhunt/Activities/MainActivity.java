@@ -2,6 +2,7 @@ package com.example.scavengerhunt.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //request location permissions
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         //Intent intent = new Intent(this, CompassActivity.class);
         //startActivity(intent);
 
