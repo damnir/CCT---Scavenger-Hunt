@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -35,7 +36,7 @@ public class TrackingService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new MyBinder();
     }
 
     @Override
@@ -92,6 +93,16 @@ public class TrackingService extends Service {
 
         //start foreground
         startForeground(1, notification); //start foreground so it doesn't get killed*/
+    }
+
+    public class MyBinder extends Binder {
+        public TrackingService getService() {
+            return TrackingService.this;
+        }
+    }
+
+    public void setStatus(String status) {
+
     }
 
     //location tracked implementation
