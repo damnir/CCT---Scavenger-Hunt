@@ -1,6 +1,7 @@
 package com.example.scavengerhunt.Activities.HuntFragments;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.CancellationToken;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -72,6 +74,16 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+        try {
+            boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+                    activity, R.raw.style_json));
+
+            if (!success) {
+                Log.e("TAG", "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e("TAG", "Can't find style. Error: ", e);
+        }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable. user);
         Bitmap smallMarker = Bitmap.createScaledBitmap(icon, 75, 75, false);
@@ -108,7 +120,8 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
                                 map.addCircle(new CircleOptions()
                                         .center(pos)
                                         .radius(50)
-                                        .fillColor(6000909));
+                                        .strokeColor(Color.RED)
+                                        .fillColor(0x7FDD0000));
 
                                 CameraPosition cameraPosition = new CameraPosition.Builder()
                                         .target(pos)
