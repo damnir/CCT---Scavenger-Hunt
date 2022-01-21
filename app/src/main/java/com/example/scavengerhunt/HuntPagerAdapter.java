@@ -33,6 +33,7 @@ public class HuntPagerAdapter extends FragmentPagerAdapter {
             case 0: return "Navigate";
             case 1: return "Map";
             case 2: return "Log";
+            case 3: return "Radar";
         }
 
         return "";

@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.scavengerhunt.Activities.HuntFragments.CompassFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.LogFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.MapFragment;
+import com.example.scavengerhunt.Activities.HuntFragments.RadarFragment;
 import com.example.scavengerhunt.HuntPagerAdapter;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.TrackingService;
@@ -54,6 +55,7 @@ public class HuntActivity extends AppCompatActivity {
         fragmentList.add(new CompassFragment());
         fragmentList.add(mapFragment);
         fragmentList.add(new LogFragment());
+        fragmentList.add(new RadarFragment());
 
         pager = findViewById(R.id.pager);
         pagerAdapter = new HuntPagerAdapter(getSupportFragmentManager(), fragmentList);
