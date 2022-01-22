@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
 
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="20dp"
         android:paddingRight="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toTopOf="@+id/sotw_label"
         app:layout_constraintEnd_toEndOf="parent"
