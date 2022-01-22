@@ -6,12 +6,16 @@
         <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/activity_compass.xml" value="0.2388157894736842" />
         <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/activity_hunt.xml" value="0.2388157894736842" />
         <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/activity_main.xml" value="0.2388157894736842" />
+        <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/activity_new_session.xml" value="0.2355263157894737" />
         <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/fragment_compass.xml" value="0.2355263157894737" />
+        <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/fragment_log.xml" value="0.2355263157894737" />
         <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/fragment_map.xml" value="0.2355263157894737" />
         <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/fragment_mapview.xml" value="0.2388157894736842" />
         <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/fragment_radar.xml" value="0.2355263157894737" />
         <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/gradientmap.xml" value="0.2355263157894737" />
         <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/gradientsky.xml" value="0.2355263157894737" />
+        <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/logs_view.xml" value="0.2355263157894737" />
+        <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/scavengers_view.xml" value="0.2355263157894737" />
         <entry key="..\:/Users/damir/AndroidStudioProjects/ScavengerHunt2/app/src/main/res/layout/sky.xml" value="0.2355263157894737" />
       </map>
     </option>

@@ -10,6 +10,9 @@ import com.example.scavengerhunt.Activities.HuntFragments.CompassFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.LogFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.MapFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.RadarFragment;
+import com.example.scavengerhunt.Entities.Log;
+import com.example.scavengerhunt.Entities.Session;
+import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.HuntPagerAdapter;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.TrackingService;
@@ -28,7 +31,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,8 @@ public class HuntActivity extends AppCompatActivity {
     private GoogleMap map;
 
     private TrackingService trackingService;
+
+    private Database dbRef = Database.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +66,33 @@ public class HuntActivity extends AppCompatActivity {
 
         pager.setAdapter(pagerAdapter);
 
+
+
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(pager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.camping_icon_13511);
+
+
+        Session.getInstance().addLog(addLogTest());
+        Session.getInstance().addLog(addLogTest());
+        dbRef.addLog();
 
         /*
         Intent intent = new Intent(this, TrackingService.class);
         startService(intent);
         this.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         */
+    }
+
+    //TEST
+    public Log addLogTest() {
+        Log log = new Log();
+        log.setStamp("13:43 Artifact Collected");
+        log.setTitle("Some Rock");
+        log.setLabel("Found at:");
+        log.setDescription("lksdnfglk;dsnf sdlkf nsdlkf jsdlkf jsdlkfdsfsdljk  jklsdf");
+
+        return log;
     }
 
     /*

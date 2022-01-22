@@ -118,4 +118,12 @@ public class Database {
         return session;
     }
 
+    public void addLog() {
+
+
+        mDatabase.child("active_sessions").child(
+                User.getInstance().getActiveSessionId()).child("log").setValue(session.logs);
+
+    }
+
 }

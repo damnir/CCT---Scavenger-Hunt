@@ -1,6 +1,6 @@
 package com.example.scavengerhunt.Entities;
 
-import android.util.Log;
+//import android.util.Log;
 
 import com.example.scavengerhunt.Firebase.Database;
 
@@ -14,11 +14,13 @@ public class Session {
     private String sessionId;
     private User sessionOwner;
     private List<Scavenger> scavengers;
+    public List<Log> logs;
 
     private Database dbRef = Database.getInstance();
 
     public Session(String id) {
         scavengers = new ArrayList<>();
+        logs = new ArrayList<>();
 
         dbRef = Database.getInstance();
 
@@ -73,10 +75,24 @@ public class Session {
 
     public void updateRole(int scavengerId, String role) {
         scavengers.get(scavengerId).setRole(role);
-        Log.d("SC", "user instance: " + User.getInstance().getActiveSessionId() + " scavengerId: " + scavengerId + " role:" + role);
-        Log.d("SC", "dbref: " + dbRef.test);
+        //Log.d("SC", "user instance: " + User.getInstance().getActiveSessionId() + " scavengerId: " + scavengerId + " role:" + role);
+        //Log.d("SC", "dbref: " + dbRef.test);
         dbRef.updateRole(User.getInstance().getActiveSessionId(), scavengerId, role);
     }
+
+    public void setLogs(List<Log> nLogs) {
+        this.logs = nLogs;
+    }
+
+    public List<Log> getLogs() {
+        return this.logs;
+    }
+
+    public void addLog(Log nLog) {
+        logs.add(nLog);
+    }
+
+
 
 
 

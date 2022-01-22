@@ -125,7 +125,7 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
 
                                 CameraPosition cameraPosition = new CameraPosition.Builder()
                                         .target(pos)
-                                        .zoom(19)
+                                        .zoom(18)
                                         .tilt(67.5f)
                                         .bearing(314)
                                         .build();
