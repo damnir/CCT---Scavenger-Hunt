@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.scavengerhunt.CameraPermissionHelper;
@@ -46,11 +47,14 @@ public class AugmentedRealityActivity extends AppCompatActivity {
     private ArFragment arFragment;
     private Plane plane;
     private static Random rand = new Random();
+    private TextView scanMessage;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        scanMessage = findViewById(R.id.scanText);
 
         if (!isARCoreSupportedAndUpToDate())
             return;
@@ -156,10 +160,18 @@ public class AugmentedRealityActivity extends AppCompatActivity {
                     handler.postDelayed(placeRandomly, 3000);
                     return;
                 }
+                TextView text = findViewById(R.id.scanText);
+                text.setText("Find the artifact!");
+
+                //scanMessage.setEnabled(false);
                 int randPlane = rand.nextInt(planes.size() - 1);
                 Pose pose = arrPlanes[randPlane].getCenterPose();
                 Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pose);
                 placeObject(arFragment, anchor, R.raw.block);
+            }
+            else{
+                handler.postDelayed(placeRandomly, 3000);
+                return;
             }
         }
     };
