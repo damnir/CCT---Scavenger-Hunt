@@ -119,7 +119,7 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
 
                                 map.addCircle(new CircleOptions()
                                         .center(pos)
-                                        .radius(50)
+                                        .radius(75)
                                         .strokeColor(Color.RED)
                                         .fillColor(0x7FDD0000));
 

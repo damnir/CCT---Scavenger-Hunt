@@ -18,17 +18,22 @@
         android:id="@+id/log_stamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:layout_weight="1"
+        android:paddingBottom="5dp"
         android:text="TextView"
         android:textSize="15sp" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_weight="1"
-        android:background="#D50000"
-        android:backgroundTint="#EAEAEA"
-        app:cardCornerRadius="15dp">
+        android:backgroundTint="#FFFFFF"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="12dp">
+
 
         <ImageView
             android:id="@+id/log_image"
@@ -89,7 +94,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:paddingTop="5dp"
         android:text="."
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -101,7 +105,6 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center"
-        android:paddingTop="5dp"
         android:text="."
         android:textSize="20sp"
         android:textStyle="bold" />
