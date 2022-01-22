@@ -28,4 +28,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    public void onARClick(View v) {
+        Intent intent = new Intent(this, AugmentedRealityActivity.class);
+        startActivity(intent);
+    }
 }
