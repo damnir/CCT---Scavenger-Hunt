@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import com.google.ar.core.ArCoreApk;
 import com.google.ar.core.Config;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
+import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
 import com.google.ar.core.exceptions.UnavailableApkTooOldException;
 import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
@@ -29,11 +32,21 @@ import com.google.ar.sceneform.rendering.Renderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 
 public class AugmentedRealityActivity extends AppCompatActivity {
 
     private Session mSession;
     private ArFragment arFragment;
+    private Plane plane;
+    private static Random rand = new Random();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +58,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_augmented_reality);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
-        arFragment.setOnTapArPlaneListener(
+        /*arFragment.setOnTapArPlaneListener(
                 (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
                     if (plane.getType() != Plane.Type.HORIZONTAL_UPWARD_FACING)
                         return;
@@ -53,8 +66,12 @@ public class AugmentedRealityActivity extends AppCompatActivity {
                     Anchor anchor = hitresult.createAnchor();
                     placeObject(arFragment, anchor, R.raw.block);
                 }
-        );
+        );*/
+
+        handler.postDelayed(placeRandomly, 10000);
+
     }
+
 
     private boolean mUserRequestedInstall = true;
 
@@ -124,6 +141,28 @@ public class AugmentedRealityActivity extends AppCompatActivity {
             finish();
         }
     }
+
+    final Handler handler = new Handler(Looper.getMainLooper());
+
+    private Runnable placeRandomly = new Runnable() {
+        @Override
+        public void run() {
+            Collection<Plane> planes = arFragment.getArSceneView().getSession()
+                    .getAllTrackables(Plane.class);
+            //Plane[] arrPlanes = (Plane[]) planes.toArray();
+            Plane[] arrPlanes = planes.toArray(new Plane[planes.size()]);
+            if (!planes.isEmpty()) {
+                if(planes.size() < 3) {
+                    handler.postDelayed(placeRandomly, 3000);
+                    return;
+                }
+                int randPlane = rand.nextInt(planes.size() - 1);
+                Pose pose = arrPlanes[randPlane].getCenterPose();
+                Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pose);
+                placeObject(arFragment, anchor, R.raw.block);
+            }
+        }
+    };
 
     private boolean isARCoreSupportedAndUpToDate() {
         ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(this);
