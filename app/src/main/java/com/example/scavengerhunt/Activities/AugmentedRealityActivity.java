@@ -2,22 +2,18 @@ package com.example.scavengerhunt.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.scavengerhunt.CameraPermissionHelper;
+import com.example.scavengerhunt.Misc.CameraPermissionHelper;
 import com.example.scavengerhunt.R;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.ArCoreApk;
 import com.google.ar.core.Config;
-import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
@@ -33,15 +29,13 @@ import com.google.ar.sceneform.rendering.Renderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 
 public class AugmentedRealityActivity extends AppCompatActivity {
+
+    //from tutorial https://medium.com/geekculture/develop-your-helloar-app-in-android-studio-using-arcore-and-sceneform-d032e5788036
 
     private Session mSession;
     private ArFragment arFragment;

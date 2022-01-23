@@ -11,7 +11,7 @@ import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.R;
-import com.example.scavengerhunt.SessionAdapter;
+import com.example.scavengerhunt.Misc.SessionAdapter;
 import com.example.scavengerhunt.ViewModels.SessionViewModel;
 import com.google.firebase.database.DataSnapshot;
 

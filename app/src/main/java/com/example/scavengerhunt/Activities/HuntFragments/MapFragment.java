@@ -21,7 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.scavengerhunt.R;
-import com.example.scavengerhunt.TrackingService;
+import com.example.scavengerhunt.Misc.TrackingService;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

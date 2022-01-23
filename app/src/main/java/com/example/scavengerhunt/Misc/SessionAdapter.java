@@ -1,20 +1,19 @@
-package com.example.scavengerhunt;
+package com.example.scavengerhunt.Misc;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scavengerhunt.Entities.Scavenger;
+import com.example.scavengerhunt.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class SessionAdapter extends RecyclerView.Adapter<SessionAdapter.DataViewHolder>{
 

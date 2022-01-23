@@ -1,6 +1,8 @@
-package com.example.scavengerhunt;
+package com.example.scavengerhunt.Misc;
 
 import android.content.Context;
+
+import com.example.scavengerhunt.R;
 
 /**
  * SOTW is short Side Of The World

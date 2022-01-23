@@ -1,4 +1,4 @@
-package com.example.scavengerhunt;
+package com.example.scavengerhunt.Misc;
 
 /*
  * Copyright 2017 Google LLC

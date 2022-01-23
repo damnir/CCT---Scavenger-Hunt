@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import android.view.LayoutInflater;
@@ -16,12 +16,9 @@ import android.view.ViewGroup;
 
 import com.example.scavengerhunt.Entities.Log;
 import com.example.scavengerhunt.Entities.Session;
-import com.example.scavengerhunt.LogAdapter;
+import com.example.scavengerhunt.Misc.LogAdapter;
 import com.example.scavengerhunt.R;
-import com.example.scavengerhunt.Entities.Log;
-import com.example.scavengerhunt.SessionAdapter;
 import com.example.scavengerhunt.ViewModels.LogViewModel;
-import com.example.scavengerhunt.ViewModels.SessionViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
 

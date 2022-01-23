@@ -4,11 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,10 +16,7 @@ import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.R;
-import com.example.scavengerhunt.SessionAdapter;
 import com.example.scavengerhunt.ViewModels.SessionViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.annotations.Nullable;
 

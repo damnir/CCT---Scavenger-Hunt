@@ -13,24 +13,23 @@ import com.example.scavengerhunt.Activities.HuntFragments.RadarFragment;
 import com.example.scavengerhunt.Entities.Log;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Firebase.Database;
-import com.example.scavengerhunt.HuntPagerAdapter;
+import com.example.scavengerhunt.Misc.GeofenceBroadcastReceiver;
+import com.example.scavengerhunt.Misc.HuntPagerAdapter;
 import com.example.scavengerhunt.R;
-import com.example.scavengerhunt.TrackingService;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.example.scavengerhunt.Misc.TrackingService;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 
-import android.content.ComponentName;
-import android.content.Context;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
+import android.provider.SyncStateContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +45,12 @@ public class HuntActivity extends AppCompatActivity {
     private TrackingService trackingService;
 
     private Database dbRef = Database.getInstance();
+
+    private List<Geofence> geofenceList;
+    private GeofencingClient geofencingClient;
+
+    private PendingIntent geofencePendingIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,25 +68,87 @@ public class HuntActivity extends AppCompatActivity {
 
         pager = findViewById(R.id.pager);
         pagerAdapter = new HuntPagerAdapter(getSupportFragmentManager(), fragmentList);
-
         pager.setAdapter(pagerAdapter);
-
-
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(pager);
         tabLayout.getTabAt(0).setIcon(R.drawable.camping_icon_13511);
 
-
         Session.getInstance().addLog(addLogTest());
         Session.getInstance().addLog(addLogTest());
         dbRef.addLog();
 
-        /*
-        Intent intent = new Intent(this, TrackingService.class);
-        startService(intent);
-        this.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        */
+        geofencingClient = LocationServices.getGeofencingClient(this);
+        geofenceList = new ArrayList<>();
+
+        String requestId = "1";
+
+        geofenceList.add(new Geofence.Builder()
+                // Set the request ID of the geofence. This is a string to identify this
+                // geofence.
+                .setRequestId(requestId)
+
+                .setCircularRegion(
+                        52.937945,
+                        -1.189676,
+                        75
+                )
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                        Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build());
+
+        geofenceList.add(new Geofence.Builder()
+                // Set the request ID of the geofence. This is a string to identify this
+                // geofence.
+                .setRequestId(requestId)
+
+                .setCircularRegion(
+                        52.935587,
+                        -1.194325,
+                        75
+                )
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                        Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build());
+
+
+
+        geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
+                .addOnSuccessListener(this, aVoid -> {
+                    android.util.Log.d("GEO", "geofence added");
+                    // Geofences added
+                    // ...
+                })
+                .addOnFailureListener(this, e -> {
+                    // Failed to add geofences
+                    // ...
+                    android.util.Log.d("GEO", "geofence failed to add");
+
+                });
+
+
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        // Reuse the PendingIntent if we already have it.
+        if (geofencePendingIntent != null) {
+            return geofencePendingIntent;
+        }
+        Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
+        // calling addGeofences() and removeGeofences().
+        geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.
+                FLAG_UPDATE_CURRENT);
+        return geofencePendingIntent;
+    }
+
+    private GeofencingRequest getGeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.addGeofences(geofenceList);
+        return builder.build();
     }
 
     //TEST
@@ -95,30 +162,7 @@ public class HuntActivity extends AppCompatActivity {
         return log;
     }
 
-    /*
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        this.map = googleMap;
-    }*/
 
-
-    /*
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        //on service connected bind to the service and getService
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            TrackingService.MyBinder myBinder = (TrackingService.MyBinder) service;
-            trackingService = myBinder.getService();
-            trackingService.setStatus("TRACKING"); //start tracking
-            //progressHandler.postDelayed(updateProgress, 0); //update UI based on progress
-            //update(); //call update to update all UI elements
-        }
-        //on disconnected null the service reference
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            trackingService = null;
-        }
-    };*/
 
 
 }

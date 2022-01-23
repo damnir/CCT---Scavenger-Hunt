@@ -1,4 +1,4 @@
-package com.example.scavengerhunt;
+package com.example.scavengerhunt.Misc;
 
 import android.Manifest;
 import android.app.Notification;
@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import com.example.scavengerhunt.Activities.HuntActivity;
+import com.example.scavengerhunt.R;
 
 public class TrackingService extends Service {
 

@@ -1,9 +1,8 @@
-package com.example.scavengerhunt;
+package com.example.scavengerhunt.Misc;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scavengerhunt.Entities.Log;
-import com.example.scavengerhunt.Entities.Scavenger;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.example.scavengerhunt.R;
 
 import java.util.ArrayList;
 import java.util.List;
