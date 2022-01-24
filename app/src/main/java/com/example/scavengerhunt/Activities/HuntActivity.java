@@ -81,12 +81,13 @@ public class HuntActivity extends AppCompatActivity {
         geofencingClient = LocationServices.getGeofencingClient(this);
         geofenceList = new ArrayList<>();
 
-        String requestId = "1";
+        String requestId1 = "1";
+        String requestId2 = "2";
 
         geofenceList.add(new Geofence.Builder()
                 // Set the request ID of the geofence. This is a string to identify this
                 // geofence.
-                .setRequestId(requestId)
+                .setRequestId(requestId1)
 
                 .setCircularRegion(
                         52.937945,
@@ -101,7 +102,7 @@ public class HuntActivity extends AppCompatActivity {
         geofenceList.add(new Geofence.Builder()
                 // Set the request ID of the geofence. This is a string to identify this
                 // geofence.
-                .setRequestId(requestId)
+                .setRequestId(requestId2)
 
                 .setCircularRegion(
                         52.935587,
