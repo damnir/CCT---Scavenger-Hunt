@@ -19,9 +19,13 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Map;
+import java.util.Objects;
 
 public class NewSessionActivity extends AppCompatActivity {
 
@@ -30,6 +34,9 @@ public class NewSessionActivity extends AppCompatActivity {
     private SessionAdapter adapter;
 
     TextView sessionIdText;
+    SessionViewModel viewModel;
+
+    private LiveData<DataSnapshot> actionLiveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +55,38 @@ public class NewSessionActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        SessionViewModel viewModel = new ViewModelProvider(this,
+        viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(SessionViewModel.class);
 
         viewModel.updateDBReference();
 
         LiveData<DataSnapshot> liveData = viewModel.getUsersLiveDataSS();
+        actionLiveData = viewModel.getAction();
 
         liveData.observe(this, dataSnapshot -> {
             if (dataSnapshot != null) {
                     session =  dataSnapshot.getValue(Session.class);
                     adapter.setData(session.getScavengers());
                     sessionIdText.setText(session.getSessionId());
+            }
+        });
+
+        actionLiveData.observe(this, dataSnapshot -> {
+            if (dataSnapshot != null) {
+                String latestAction = "";
+
+                try {
+                    for (DataSnapshot c:dataSnapshot.getChildren()) {
+                        latestAction = c.getValue(String.class);
+                    }
+                    if (latestAction.equals("start")) {
+                        Log.d("LIVE", "YESdatasnapshot: " + dataSnapshot);
+
+                        Intent intent = new Intent(this, HuntActivity.class);
+                        startActivity(intent);
+                    }
+                }catch (NullPointerException ignored){}
+
             }
         });
     }
@@ -83,6 +110,10 @@ public class NewSessionActivity extends AppCompatActivity {
             toast.show();
             return;
         }
+        dbRef.newAction(Database.Action.START);
+
+        actionLiveData.removeObservers(this);
+
         Intent intent = new Intent(this, HuntActivity.class);
         startActivity(intent);
     }

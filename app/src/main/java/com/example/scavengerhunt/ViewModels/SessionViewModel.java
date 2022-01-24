@@ -24,7 +24,11 @@ public class SessionViewModel extends ViewModel {
     private DatabaseReference SESSION_REF =
             FirebaseDatabase.getInstance().getReference("/active_sessions/" + User.getInstance().getActiveSessionId() + "/");
 
+    private DatabaseReference ACTION_REF =
+            FirebaseDatabase.getInstance().getReference("/active_sessions/" + User.getInstance().getActiveSessionId() + "/actions/");
+
     private FirebaseQueryLiveData usersLiveData = new FirebaseQueryLiveData(SESSION_REF);
+    private FirebaseQueryLiveData actionLiveData = new FirebaseQueryLiveData(ACTION_REF);
 
     @NonNull
     public LiveData<DataSnapshot> getUsersLiveDataSS() {
@@ -32,16 +36,23 @@ public class SessionViewModel extends ViewModel {
         return usersLiveData;
     }
 
+    @NonNull
+    public LiveData<DataSnapshot> getAction() {
+        return actionLiveData;
+    }
+
+    /*
     public void formatSession(DataSnapshot dataSnapshot) {
         //Log.d("ONCHANGED", "" + dataSnapshot.getValue(Session.class));
         session = dataSnapshot.getValue(Session.class);
         for (Scavenger s : session.getScavengers()) {
             Log.d("ONCHANGED", s.getRole() + " " + s.getUser().getName());
         }
-    }
+    }*/
 
     public void updateDBReference() {
         SESSION_REF = FirebaseDatabase.getInstance().getReference("/active_sessions/" + User.getInstance().getActiveSessionId() + "/");
+        ACTION_REF = FirebaseDatabase.getInstance().getReference("/active_sessions/" + User.getInstance().getActiveSessionId() + "/actions/");
     }
 
 

@@ -18,6 +18,14 @@ public class Database {
     private FirebaseAuth mAuth;
     private Session session = Session.getInstance();
     public String test = "test";
+    public enum Action {
+        START,
+        PAUSE,
+        END,
+        ARTIFACT_COLLECTED,
+        NEW_MESSAGE,
+        NEW_STORY
+    }
     //private User user = User.getInstance();
 
 
@@ -125,5 +133,16 @@ public class Database {
                 User.getInstance().getActiveSessionId()).child("log").setValue(session.logs);
 
     }
+
+    public void newAction(Action action) {
+        String sessionId = User.getInstance().getActiveSessionId();
+        switch (action) {
+            case START:
+                String sAction = mDatabase.child("active_sessions").child(sessionId).child("actions").push().getKey();
+                mDatabase.child("active_sessions").child(sessionId).child("actions").child(sAction).setValue("start");
+        }
+    }
+
+
 
 }
