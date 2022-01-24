@@ -76,7 +76,7 @@ public class HuntActivity extends AppCompatActivity {
 
         Session.getInstance().addLog(addLogTest());
         Session.getInstance().addLog(addLogTest());
-        dbRef.addLog();
+        //dbRef.addLog();
 
         geofencingClient = LocationServices.getGeofencingClient(this);
         geofenceList = new ArrayList<>();

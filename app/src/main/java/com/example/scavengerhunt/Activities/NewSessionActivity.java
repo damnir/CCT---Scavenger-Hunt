@@ -37,6 +37,7 @@ public class NewSessionActivity extends AppCompatActivity {
     SessionViewModel viewModel;
 
     private LiveData<DataSnapshot> actionLiveData;
+    LiveData<DataSnapshot> liveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class NewSessionActivity extends AppCompatActivity {
 
         viewModel.updateDBReference();
 
-        LiveData<DataSnapshot> liveData = viewModel.getUsersLiveDataSS();
+        liveData = viewModel.getUsersLiveDataSS();
         actionLiveData = viewModel.getAction();
 
         liveData.observe(this, dataSnapshot -> {
@@ -70,6 +71,7 @@ public class NewSessionActivity extends AppCompatActivity {
                     sessionIdText.setText(session.getSessionId());
             }
         });
+
 
         actionLiveData.observe(this, dataSnapshot -> {
             if (dataSnapshot != null) {
@@ -81,6 +83,9 @@ public class NewSessionActivity extends AppCompatActivity {
                     }
                     if (latestAction.equals("start")) {
                         Log.d("LIVE", "YESdatasnapshot: " + dataSnapshot);
+
+                        liveData.removeObservers(this);
+                        actionLiveData.removeObservers(this);
 
                         Intent intent = new Intent(this, HuntActivity.class);
                         startActivity(intent);
@@ -112,6 +117,7 @@ public class NewSessionActivity extends AppCompatActivity {
         }
         dbRef.newAction(Database.Action.START);
 
+        liveData.removeObservers(this);
         actionLiveData.removeObservers(this);
 
         Intent intent = new Intent(this, HuntActivity.class);

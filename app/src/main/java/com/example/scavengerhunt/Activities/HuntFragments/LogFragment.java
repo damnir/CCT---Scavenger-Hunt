@@ -65,6 +65,9 @@ public class LogFragment extends Fragment {
 
         liveData.observe(this, dataSnapshot -> {
             if (dataSnapshot != null) {
+                if(!dataSnapshot.hasChildren()){
+                    return;
+                }
                 //session =  dataSnapshot.getValue(Session.class);
                 GenericTypeIndicator<List<Log>> t = new GenericTypeIndicator<List<Log>>() {};
                 session.logs = dataSnapshot.getValue(t);
