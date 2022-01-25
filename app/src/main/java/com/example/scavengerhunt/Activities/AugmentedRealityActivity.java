@@ -42,6 +42,8 @@ public class AugmentedRealityActivity extends AppCompatActivity {
     private Plane plane;
     private static Random rand = new Random();
     private TextView scanMessage;
+    private AnchorNode anchorNode;
+    private TransformableNode node;
 
 
     @Override
@@ -56,17 +58,10 @@ public class AugmentedRealityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_augmented_reality);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
-        /*arFragment.setOnTapArPlaneListener(
-                (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
-                    if (plane.getType() != Plane.Type.HORIZONTAL_UPWARD_FACING)
-                        return;
-
-                    Anchor anchor = hitresult.createAnchor();
-                    placeObject(arFragment, anchor, R.raw.block);
-                }
-        );*/
 
         handler.postDelayed(placeRandomly, 10000);
+
+
 
     }
 
@@ -100,14 +95,6 @@ public class AugmentedRealityActivity extends AppCompatActivity {
                         }
                         break;
                     case INSTALL_REQUESTED:
-                        // When this method returns `INSTALL_REQUESTED`:
-                        // 1. ARCore pauses this activity.
-                        // 2. ARCore prompts the user to install or update Google Play
-                        //    Services for AR (market://details?id=com.google.ar.core).
-                        // 3. ARCore downloads the latest device profile data.
-                        // 4. ARCore resumes this activity. The next invocation of
-                        //    requestInstall() will either return `INSTALLED` or throw an
-                        //    exception if the installation or update did not succeed.
                         mUserRequestedInstall = false;
                         return;
                 }
@@ -119,10 +106,12 @@ public class AugmentedRealityActivity extends AppCompatActivity {
             return;
         }
 
-        /*Intent sceneViewerIntent = new Intent(Intent.ACTION_VIEW);
-        sceneViewerIntent.setData(Uri.parse("https://arvr.google.com/scene-viewer/1.0?file=https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf"));
-        sceneViewerIntent.setPackage("com.google.android.googlequicksearchbox");
-        startActivity(sceneViewerIntent);*/
+        anchorNode = new AnchorNode();
+        anchorNode.setOnTapListener((hitTestResult, motionEvent) -> {
+            Log.d("TAP", "object tapped");
+            TextView text = findViewById(R.id.scanText);
+            text.setText("POO");
+        });
 
     }
 
@@ -158,7 +147,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
                 text.setText("Find the artifact!");
 
                 //scanMessage.setEnabled(false);
-                int randPlane = rand.nextInt(planes.size() - 1);
+                int randPlane = rand.nextInt(planes.size() - 2);
                 Pose pose = arrPlanes[randPlane].getCenterPose();
                 Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pose);
                 placeObject(arFragment, anchor, R.raw.block);
@@ -221,12 +210,18 @@ public class AugmentedRealityActivity extends AppCompatActivity {
     }
 
     private void addNodeToScene(ArFragment arFragment, Anchor anchor, Renderable renderable) {
-        AnchorNode anchorNode = new AnchorNode(anchor);
-        TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
+        anchorNode.setAnchor(anchor);
+        node = new TransformableNode(arFragment.getTransformationSystem());
         node.setRenderable(renderable);
         node.setParent(anchorNode);
         arFragment.getArSceneView().getScene().addChild(anchorNode);
         node.select();
+
+        node.setOnTapListener((hitTestResult, motionEvent) -> {
+            Log.d("HIT", "HIT REGISTERED");
+        });
+
+
     }
 
 

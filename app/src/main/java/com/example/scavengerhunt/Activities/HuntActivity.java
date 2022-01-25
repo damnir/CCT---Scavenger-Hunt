@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.scavengerhunt.Activities.HuntFragments.ARFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.CompassFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.LogFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.MapFragment;
@@ -65,6 +66,7 @@ public class HuntActivity extends AppCompatActivity {
         fragmentList.add(mapFragment);
         fragmentList.add(new LogFragment());
         fragmentList.add(new RadarFragment());
+        fragmentList.add(new ARFragment());
 
         pager = findViewById(R.id.pager);
         pagerAdapter = new HuntPagerAdapter(getSupportFragmentManager(), fragmentList);
@@ -72,6 +74,7 @@ public class HuntActivity extends AppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(pager);
+
         tabLayout.getTabAt(0).setIcon(R.drawable.camping_icon_13511);
 
         Session.getInstance().addLog(addLogTest());
