@@ -11,6 +11,7 @@
         android:id="@+id/button6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onARButtonClick"
         android:text="AR" />
 
 </LinearLayout>

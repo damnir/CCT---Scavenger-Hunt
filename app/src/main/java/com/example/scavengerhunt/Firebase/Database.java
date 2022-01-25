@@ -127,10 +127,10 @@ public class Database {
     }
 
     public void addLog() {
-
+        Log.d("ADDED", "add logs called");
 
         mDatabase.child("active_sessions").child(
-                User.getInstance().getActiveSessionId()).child("log").setValue(session.logs);
+                User.getInstance().getActiveSessionId()).child("log").setValue(Session.getInstance().logs);
 
     }
 

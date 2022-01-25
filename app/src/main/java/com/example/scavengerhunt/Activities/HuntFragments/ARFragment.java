@@ -14,6 +14,7 @@ import com.example.scavengerhunt.R;
 
 public class ARFragment extends Fragment {
 
+    private View v;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,8 +29,4 @@ public class ARFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_a_r, container, false);
     }
 
-    public void onButtonClick(View v) {
-        Intent intent = new Intent(getActivity(), AugmentedRealityActivity.class);
-        startActivity(intent);
-    }
 }

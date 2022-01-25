@@ -3,6 +3,8 @@ package com.example.scavengerhunt.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -18,6 +20,7 @@ import com.example.scavengerhunt.Misc.GeofenceBroadcastReceiver;
 import com.example.scavengerhunt.Misc.HuntPagerAdapter;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.Misc.TrackingService;
+import com.example.scavengerhunt.ViewModels.SessionViewModel;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
@@ -26,11 +29,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
 
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +57,20 @@ public class HuntActivity extends AppCompatActivity {
 
     private PendingIntent geofencePendingIntent;
 
+    private Session session;
+
+    LiveData<DataSnapshot> liveData;
+
+    SessionViewModel viewModel;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt);
+
+        session = Session.getInstance();
 
         List<Fragment> fragmentList = new ArrayList<>();
 
@@ -76,10 +90,6 @@ public class HuntActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(pager);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.camping_icon_13511);
-
-        Session.getInstance().addLog(addLogTest());
-        Session.getInstance().addLog(addLogTest());
-        //dbRef.addLog();
 
         geofencingClient = LocationServices.getGeofencingClient(this);
         geofenceList = new ArrayList<>();
@@ -132,6 +142,22 @@ public class HuntActivity extends AppCompatActivity {
 
                 });
 
+        viewModel = new ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(SessionViewModel.class);
+
+        viewModel.updateDBReference();
+
+        liveData = viewModel.getUsersLiveDataSS();
+
+        liveData.observe(this, dataSnapshot -> {
+            if (dataSnapshot != null) {
+                if(dataSnapshot.hasChildren()) {
+                    session =  dataSnapshot.getValue(Session.class);
+                }
+
+            }
+        });
+
 
     }
 
@@ -166,7 +192,10 @@ public class HuntActivity extends AppCompatActivity {
         return log;
     }
 
-
+    public void onARButtonClick(View v) {
+        Intent intent = new Intent(this, AugmentedRealityActivity.class);
+        startActivity(intent);
+    }
 
 
 }

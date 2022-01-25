@@ -2,13 +2,16 @@ package com.example.scavengerhunt.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.Misc.CameraPermissionHelper;
 import com.example.scavengerhunt.R;
 import com.google.ar.core.Anchor;
@@ -219,6 +222,14 @@ public class AugmentedRealityActivity extends AppCompatActivity {
 
         node.setOnTapListener((hitTestResult, motionEvent) -> {
             Log.d("HIT", "HIT REGISTERED");
+            com.example.scavengerhunt.Entities.Log log = new com.example.scavengerhunt.Entities.Log();
+            log.setStamp("13:43 Artifact Collected");
+            log.setTitle("Some Rock");
+            log.setLabel("Found at:");
+            log.setDescription("lksdnfglk;dsnf sdlkf nsdlkf jsdlkf jsdlkfdsfsdljk  jklsdf");
+            com.example.scavengerhunt.Entities.Session.getInstance().addLog(log);
+            Database.getInstance().addLog();
+            finish();
         });
 
 
