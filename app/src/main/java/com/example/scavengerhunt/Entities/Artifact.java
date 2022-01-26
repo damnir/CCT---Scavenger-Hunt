@@ -7,6 +7,7 @@ public class Artifact {
     private String url;
     private Double alt;
     private Double lng;
+    private boolean collected;
     //gs://cct-scavenger-hunt.appspot.com/coin.png
     public Artifact() {}
 
@@ -16,6 +17,7 @@ public class Artifact {
         this.url = url;
         this.alt = alt;
         this.lng = lng;
+        this.collected = false;
     }
 
     public void setName(String name) {this.name = name;}
@@ -32,5 +34,10 @@ public class Artifact {
 
     public Double getAlt() { return this.alt; }
     public Double getLng() { return this.lng; }
+
+    public void setCollected(Boolean bool) {
+        this.collected = bool;
+    }
+    public Boolean getCollected() { return this.collected; }
 
 }

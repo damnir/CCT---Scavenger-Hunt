@@ -17,8 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.scavengerhunt.Entities.Artifact;
+import com.example.scavengerhunt.Misc.ManualData;
 import com.example.scavengerhunt.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -99,7 +102,7 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
         @Override
         public void run() {
 
-            fusedLocationClient.getLastLocation()
+            fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
                     .addOnSuccessListener(activity, new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
@@ -117,6 +120,16 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
                                         .title("Me")
                                         .icon(smallMarkerIcon));
 
+                                int area = ManualData.getInstance().inArea();
+
+                                if(area != 0) {
+                                    Log.d("GEO", "adding artifact, ID: " + area);
+                                    Artifact artifact = ManualData.getInstance().artifactsList.get(area-1);
+                                    LatLng latLng = new LatLng(artifact.getAlt(), artifact.getLng());
+                                    map.addMarker(new MarkerOptions()
+                                    .position(latLng));
+                                }
+
                                 map.addCircle(new CircleOptions()
                                         .center(pos)
                                         .radius(75)
@@ -132,6 +145,8 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
 
 
                                 map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+
 
                             }
                         }

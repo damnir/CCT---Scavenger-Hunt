@@ -136,7 +136,7 @@ public class Database {
 
     }
 
-    public void newAction(Action action) {
+    public void startAction(Action action) {
         String sessionId = User.getInstance().getActiveSessionId();
         switch (action) {
             case START:

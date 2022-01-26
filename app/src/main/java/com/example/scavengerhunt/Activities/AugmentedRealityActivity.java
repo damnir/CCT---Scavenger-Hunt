@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.Misc.CameraPermissionHelper;
+import com.example.scavengerhunt.Misc.ManualData;
 import com.example.scavengerhunt.R;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.ArCoreApk;
@@ -156,7 +157,8 @@ public class AugmentedRealityActivity extends AppCompatActivity {
                 int randPlane = 0;
                 Pose pose = arrPlanes[randPlane].getCenterPose();
                 Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pose);
-                placeObject(arFragment, anchor, R.raw.anfora);
+                int rawId = ManualData.getInstance().getRaw();
+                placeObject(arFragment, anchor, rawId);
             }
             else{
                 handler.postDelayed(placeRandomly, 3000);

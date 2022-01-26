@@ -115,7 +115,7 @@ public class NewSessionActivity extends AppCompatActivity {
             toast.show();
             return;
         }
-        dbRef.newAction(Database.Action.START);
+        dbRef.startAction(Database.Action.START);
 
         liveData.removeObservers(this);
         actionLiveData.removeObservers(this);
