@@ -23,7 +23,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView66"
+                android:id="@+id/navigate_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
@@ -31,7 +31,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView67"
+                android:id="@+id/navigate_role"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Role"
@@ -75,7 +75,7 @@
                 android:text="Session: " />
 
             <TextView
-                android:id="@+id/textView69"
+                android:id="@+id/navigate_sessionid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
@@ -90,7 +90,7 @@
                 android:text="Time:" />
 
             <TextView
-                android:id="@+id/textView71"
+                android:id="@+id/navigate_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="30:29"

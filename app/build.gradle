@@ -59,9 +59,17 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:19.0.1'
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
 
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+
 }
 
 sceneform.asset('sampledata/block.fbx',
         'default',
         'sampledata/block.sfa',
         'src/main/res/raw/block')
+
+sceneform.asset('sampledata/coin.obj',
+        'default',
+        'sampledata/coin.sfa',
+        'src/main/res/raw/coin')

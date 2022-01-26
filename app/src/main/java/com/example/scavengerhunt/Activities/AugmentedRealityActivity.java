@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.Misc.CameraPermissionHelper;
 import com.example.scavengerhunt.R;
@@ -142,18 +143,20 @@ public class AugmentedRealityActivity extends AppCompatActivity {
             //Plane[] arrPlanes = (Plane[]) planes.toArray();
             Plane[] arrPlanes = planes.toArray(new Plane[planes.size()]);
             if (!planes.isEmpty()) {
+                /*BROING BACKK !£OJ!EO!
                 if(planes.size() < 3) {
                     handler.postDelayed(placeRandomly, 3000);
                     return;
-                }
+                }*/
                 TextView text = findViewById(R.id.scanText);
                 text.setText("Find the artifact!");
 
                 //scanMessage.setEnabled(false);
-                int randPlane = rand.nextInt(planes.size() - 2);
+                //int randPlane = rand.nextInt(planes.size() - 2); BRING BACK!K! ! ! !!
+                int randPlane = 0;
                 Pose pose = arrPlanes[randPlane].getCenterPose();
                 Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pose);
-                placeObject(arFragment, anchor, R.raw.block);
+                placeObject(arFragment, anchor, R.raw.coin);
             }
             else{
                 handler.postDelayed(placeRandomly, 3000);
@@ -223,12 +226,15 @@ public class AugmentedRealityActivity extends AppCompatActivity {
         node.setOnTapListener((hitTestResult, motionEvent) -> {
             Log.d("HIT", "HIT REGISTERED");
             com.example.scavengerhunt.Entities.Log log = new com.example.scavengerhunt.Entities.Log();
+            Artifact artifact = new Artifact();
+
             log.setStamp("13:43 Artifact Collected");
             log.setTitle("Some Rock");
             log.setLabel("Found at:");
             log.setDescription("lksdnfglk;dsnf sdlkf nsdlkf jsdlkf jsdlkfdsfsdljk  jklsdf");
             com.example.scavengerhunt.Entities.Session.getInstance().addLog(log);
-            Database.getInstance().addLog();
+            //Database.getInstance().addLog();
+            Database.getInstance().testLogArtifact();
             finish();
         });
 

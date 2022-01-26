@@ -24,11 +24,15 @@ import androidx.core.app.NotificationCompat;
 import com.example.scavengerhunt.Activities.HuntActivity;
 import com.example.scavengerhunt.R;
 
+import java.util.concurrent.TimeUnit;
+
 public class TrackingService extends Service {
 
     LocationManager locationManager;
     private static final String CHANNEL_ID = "trackerChannel";
     Location lastLocation;
+
+    private long timeStart;
 
 
     public TrackingService() {
@@ -43,6 +47,7 @@ public class TrackingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        timeStart = System.currentTimeMillis();
         //create new location manager
         locationManager =
                 (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -62,6 +67,7 @@ public class TrackingService extends Service {
             return;
         }
         lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
 
         //get the repo
         //mRepo = new Repository( this.getApplication() );
@@ -143,5 +149,12 @@ public class TrackingService extends Service {
             //logLocation();
         }
 
+    }
+
+    public String getTime() {
+        Long time = System.currentTimeMillis() - timeStart;
+        String text = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toHours(time),
+                TimeUnit.MILLISECONDS.toMinutes(time));
+        return text;
     }
 }

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,7 +20,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.scavengerhunt.Misc.LatLngConverter;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.Misc.TrackingService;
 import com.google.android.gms.maps.CameraUpdate;
@@ -45,6 +48,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     private Activity activity;
     private GoogleMap map;
     private BitmapDescriptor smallMarkerIcon;
+    private TextView coords;
+    private LatLngConverter latLngConverter;
+    private TextView distance;
+    private TextView finalDestText;
+    private TextView time;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +77,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         final SupportMapFragment myMAPF = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         myMAPF.getMapAsync(this);
+
+        coords = getActivity().findViewById(R.id.navigate_coords);
+        distance = getActivity().findViewById(R.id.navigate_distance);
+        finalDestText = getActivity().findViewById(R.id.navigate_final);
+        time = getActivity().findViewById(R.id.navigate_time);
+
+        latLngConverter = new LatLngConverter();
+        //TEMPORARY VARIABLE - Reuse destination site object to get coordinates pls
+        finalDestText.setText(latLngConverter.latnglToDMS((float)52.935587, (float)-1.194325));
+
         return  view;
     }
 
@@ -129,9 +148,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(pos, 16);
             map.moveCamera(cameraUpdate);
 
+            String covertedCoords = latLngConverter.latnglToDMS((float)location.getLatitude(),
+                    (float)location.getLongitude());
+
+            coords.setText(covertedCoords);
+            distance.setText(distance(location, 52.935587, -1.194325));
+            time.setText(trackingService.getTime());
             //post a 1 second delay before updating again
             progressHandler.postDelayed(this, 1000);
 
         }
     };
+
+    private String distance(Location location, Double destinationLat, Double destinationLng) {
+        Location destination = new Location("dest");
+        destination.setLatitude(destinationLat);
+        destination.setLongitude(destinationLng);
+        float distance = location.distanceTo(destination);
+        if(distance < 1000) {
+            return ((int)distance + "m away");
+        }
+        else{
+            return (distance/1000 + "km away");
+        }
+    }
 }

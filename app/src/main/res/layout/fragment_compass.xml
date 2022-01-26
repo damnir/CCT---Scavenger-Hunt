@@ -47,15 +47,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
-        android:text="Target Location:"
+        android:text="Target Destination:"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+        app:layout_constraintTop_toBottomOf="@+id/navigate_distance" />
 
     <TextView
-        android:id="@+id/textView26"
+        android:id="@+id/navigate_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
@@ -65,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+        app:layout_constraintTop_toBottomOf="@+id/navigate_coords" />
 
     <TextView
         android:id="@+id/sotw_label"
@@ -80,7 +80,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView25"
+        android:id="@+id/navigate_coords"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -92,7 +92,7 @@
         app:layout_constraintTop_toBottomOf="@+id/sotw_label" />
 
     <TextView
-        android:id="@+id/textView28"
+        android:id="@+id/navigate_final"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="51c54'19.1&quot;N1*11'35.2&quot;W"

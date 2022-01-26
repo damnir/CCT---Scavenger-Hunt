@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.scavengerhunt.Entities.Log;
 import com.example.scavengerhunt.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,10 +88,20 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataViewHolder>{
                 description.setText(log.getDescription());
                 stamp.setText(log.getStamp());
 
-                Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable._0trophy);
-                Bitmap smallMarker = Bitmap.createScaledBitmap(icon, 135, 135, false);
+                //Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable._0trophy);
+                //Bitmap smallMarker = Bitmap.createScaledBitmap(icon, 135, 135, false);
 
-                image.setImageBitmap(smallMarker);
+                //image.setImageBitmap(smallMarker);
+
+                try{
+                    android.util.Log.d("IMAGE", "URI: " + log.getArtifact().getUrl());
+                    Picasso.get().load(log.getArtifact().getUrl()).into(image);
+                    //Picasso.get().load("https://i.imgur.com/DvpvklR.png").into(image);
+                    //Picasso.get().load(R.drawable.instagram_icon_969).into(image);
+                }catch (NullPointerException e){
+                    android.util.Log.d("IMAGE", "Exception: " + e);
+                };
+
             }
 
         }

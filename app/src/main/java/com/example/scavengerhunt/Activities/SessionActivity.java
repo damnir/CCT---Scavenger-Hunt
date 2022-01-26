@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
@@ -37,6 +38,13 @@ public class SessionActivity extends AppCompatActivity {
 
         name = findViewById(R.id.sessionUsername);
         name.setText(User.getInstance().getName());
+
+        /*
+        Artifact coin = new Artifact();
+        coin.setName("The Parade Shield");
+        coin.setDescription("The shield is part of a suit of armour that was delivered to the King in 1562. The whole set was problably made in Arboga and then sent to Antwerp where it was decorated by the goldsmith Eliseus Libaerts, following drawings by the French artist Etienne Delaune. To create the relief decor the steel has been chased, embossed, etched and gilded. The motif is inspired by tales from antiquity and depicts amazons fighting male warriors. It is probably a battle scene from the Trojan war. According to the myth the amazons supported King Priam of Troy in the war but also lost their queen Penthesileia when she was killed by Achilles.");
+        coin.setUrl("gs://cct-scavenger-hunt.appspot.com/coin.png");
+        dbRef.addCoin(coin);*/
     }
 
     public void newSessionClick(View v) {

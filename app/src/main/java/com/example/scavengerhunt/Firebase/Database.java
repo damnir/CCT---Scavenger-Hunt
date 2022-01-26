@@ -1,7 +1,9 @@
 package com.example.scavengerhunt.Firebase;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
@@ -141,6 +143,32 @@ public class Database {
                 String sAction = mDatabase.child("active_sessions").child(sessionId).child("actions").push().getKey();
                 mDatabase.child("active_sessions").child(sessionId).child("actions").child(sAction).setValue("start");
         }
+    }
+
+    public void testLogArtifact() {
+
+        mDatabase.child("artifacts").child("shield").get().addOnCompleteListener(task -> {
+           if(task.isSuccessful()){
+               Artifact artifact = task.getResult().getValue(Artifact.class);
+
+               com.example.scavengerhunt.Entities.Log log = new com.example.scavengerhunt.Entities.
+                       Log("artifact", artifact.getName(), "Description:",
+                       "12:23 - Artifact Collected", artifact.getDescription(), artifact);
+
+               Session.getInstance().addLog(log);
+               addLog();
+
+               /*
+               String key = mDatabase.child("active_sessions").child(User.getInstance()
+                       .getActiveSessionId()).child("logs").push().getKey();
+
+               mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId()).
+                       child("logs").child(key).setValue(log);*/
+
+           }
+
+
+        });
     }
 
 

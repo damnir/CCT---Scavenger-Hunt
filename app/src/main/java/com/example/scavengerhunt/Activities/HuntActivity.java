@@ -13,8 +13,12 @@ import com.example.scavengerhunt.Activities.HuntFragments.CompassFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.LogFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.MapFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.RadarFragment;
+import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Entities.Log;
+import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
+import com.example.scavengerhunt.Entities.Site;
+import com.example.scavengerhunt.Entities.User;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.Misc.GeofenceBroadcastReceiver;
 import com.example.scavengerhunt.Misc.HuntPagerAdapter;
@@ -32,10 +36,15 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 
 import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.SyncStateContract;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,9 +68,14 @@ public class HuntActivity extends AppCompatActivity {
 
     private Session session;
 
+    private TextView nameText;
+    private TextView roleText;
+    private TextView sessionText;
+
     LiveData<DataSnapshot> liveData;
 
     SessionViewModel viewModel;
+
 
 
 
@@ -71,6 +85,10 @@ public class HuntActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hunt);
 
         session = Session.getInstance();
+        nameText = findViewById(R.id.navigate_name);
+        roleText = findViewById(R.id.navigate_role);
+        sessionText = findViewById(R.id.navigate_sessionid);
+        updateText();
 
         List<Fragment> fragmentList = new ArrayList<>();
 
@@ -97,37 +115,19 @@ public class HuntActivity extends AppCompatActivity {
         String requestId1 = "1";
         String requestId2 = "2";
 
-        geofenceList.add(new Geofence.Builder()
-                // Set the request ID of the geofence. This is a string to identify this
-                // geofence.
-                .setRequestId(requestId1)
+        Site site1 = new Site("UP Intersection", "Some random text",
+                "https://firebasestorage.googleapis.com/v0/b/cct-scavenger-hunt.appspot.com/o/lakes" +
+                        "idearts.png?alt=media&token=f0d00034-74f2-4a0b-91dc-d3e6aa0dca89",
+                false, 52.937945, -1.189676);
 
-                .setCircularRegion(
-                        52.937945,
-                        -1.189676,
-                        75
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
+        Site finalSite = new Site("Highfield Park", "Some random text", "https://firebasestorage.google" +
+                "apis.com/v0/b/cct-scavenger-hunt.appspot.com/o/highfield.png?alt=media&token=2030211" +
+                "1-6eb0-450c-8521-4986d19b75c9", true, 52.935587, -1.194325);
 
-        geofenceList.add(new Geofence.Builder()
-                // Set the request ID of the geofence. This is a string to identify this
-                // geofence.
-                .setRequestId(requestId2)
+        //https://firebasestorage.googleapis.com/v0/b/cct-scavenger-hunt.appspot.com/o/highfield.png?alt=media&token=20302111-6eb0-450c-8521-4986d19b75c9
 
-                .setCircularRegion(
-                        52.935587,
-                        -1.194325,
-                        75
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
-                .build());
-
-
+        addGeofence(requestId1, site1.getLat(), site1.getLng(), 80);
+        addGeofence(requestId2, finalSite.getLat(), finalSite.getLng(), 80);
 
         geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
                 .addOnSuccessListener(this, aVoid -> {
@@ -158,6 +158,9 @@ public class HuntActivity extends AppCompatActivity {
             }
         });
 
+        Intent intent = new Intent(this, TrackingService.class);
+        startService(intent);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 
     }
 
@@ -181,6 +184,45 @@ public class HuntActivity extends AppCompatActivity {
         return builder.build();
     }
 
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
+        //on service connected bind to the service and getService
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            TrackingService.MyBinder myBinder = (TrackingService.MyBinder) service;
+            trackingService = myBinder.getService();
+            trackingService.setStatus("TRACKING"); //start tracking
+
+        }
+        //on disconnected null the service reference
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            trackingService = null;
+        }
+    };
+
+    private void addGeofence(String id, Double lat, Double lng, int radius) {
+        geofenceList.add(new Geofence.Builder()
+                // Set the request ID of the geofence. This is a string to identify this
+                // geofence.
+                .setRequestId(id)
+
+                .setCircularRegion(
+                        lat,
+                        lng,
+                        radius
+                )
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                        Geofence.GEOFENCE_TRANSITION_EXIT)
+                .build());
+    }
+
+    private void updateText() {
+        nameText.setText(User.getInstance().getName());
+        roleText.setText(Scavenger.getInstance().getRole());
+        sessionText.setText(Session.getInstance().getSessionId());
+    }
+
     //TEST
     public Log addLogTest() {
         Log log = new Log();
@@ -192,10 +234,28 @@ public class HuntActivity extends AppCompatActivity {
         return log;
     }
 
+    /*
     public void onARButtonClick(View v) {
         Intent intent = new Intent(this, AugmentedRealityActivity.class);
         startActivity(intent);
+    }*/
+
+    //TEMPORARY ---------------------------------
+    public void onARButtonClick(View v) {
+        com.example.scavengerhunt.Entities.Log log = new com.example.scavengerhunt.Entities.Log();
+        Artifact artifact = new Artifact();
+
+        log.setStamp("13:43 Artifact Collected");
+        log.setTitle("Some Rock");
+        log.setLabel("Found at:");
+        log.setDescription("lksdnfglk;dsnf sdlkf nsdlkf jsdlkf jsdlkfdsfsdljk  jklsdf");
+        com.example.scavengerhunt.Entities.Session.getInstance().addLog(log);
+        //Database.getInstance().addLog();
+        Database.getInstance().testLogArtifact();
     }
+
+
+
 
 
 }
