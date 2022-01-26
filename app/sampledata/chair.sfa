@@ -1,0 +1,68 @@
+{
+  animations: [
+    {
+      path: 'sampledata/chair.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Material',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'fine_grained_wood_col_4k',
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/chair.fbx',
+    name: 'chair',
+    recenter: 'root',
+  },
+  samplers: [
+    {
+      file: 'sampledata\\textures\\fine_grained_wood_col_4k.jpg',
+      name: 'fine_grained_wood_col_4k',
+      pipeline_name: 'C:\\Users\\CNG\\Downloads\\textures\\fine_grained_wood_col_4k.jpg',
+    },
+  ],
+  version: '0.54:2',
+}

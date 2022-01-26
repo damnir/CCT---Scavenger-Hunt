@@ -156,7 +156,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
                 int randPlane = 0;
                 Pose pose = arrPlanes[randPlane].getCenterPose();
                 Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pose);
-                placeObject(arFragment, anchor, R.raw.coin);
+                placeObject(arFragment, anchor, R.raw.anfora);
             }
             else{
                 handler.postDelayed(placeRandomly, 3000);

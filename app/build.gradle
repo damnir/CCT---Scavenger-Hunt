@@ -64,12 +64,19 @@ dependencies {
 
 }
 
-sceneform.asset('sampledata/block.fbx',
+sceneform.asset('sampledata/totem.obj',
         'default',
-        'sampledata/block.sfa',
-        'src/main/res/raw/block')
+        'sampledata/totem.sfa',
+        'src/main/res/raw/totem')
 
-sceneform.asset('sampledata/coin.obj',
+sceneform.asset('sampledata/chair.fbx',
         'default',
-        'sampledata/coin.sfa',
-        'src/main/res/raw/coin')
+        'sampledata/chair.sfa',
+        'src/main/res/raw/chair')
+
+sceneform.asset('sampledata/anfora.obj',
+        'default',
+        'sampledata/anfora.sfa',
+        'src/main/res/raw/anfora')
+
+
