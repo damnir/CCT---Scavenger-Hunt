@@ -1,6 +1,10 @@
 package com.example.scavengerhunt.Activities.HuntFragments;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +24,7 @@ import android.view.ViewGroup;
 
 import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Misc.ManualData;
+import com.example.scavengerhunt.Misc.TrackingService;
 import com.example.scavengerhunt.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -52,6 +58,10 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
 
     private FusedLocationProviderClient fusedLocationClient;
     private BitmapDescriptor smallMarkerIcon;
+
+    private TrackingService trackingService;
+
+    private Location location;
 
 
     @Override
@@ -92,9 +102,31 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
         Bitmap smallMarker = Bitmap.createScaledBitmap(icon, 75, 75, false);
         smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
         this.map = googleMap;
-        progressHandler.postDelayed(updateProgress, 0); //update UI based on progress
+
+        Intent intent = new Intent(getActivity(), TrackingService.class);
+        activity.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        activity.startService(intent);
 
     }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        //on service connected bind to the service and getService
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            TrackingService.MyBinder myBinder = (TrackingService.MyBinder) service;
+            trackingService = myBinder.getService();
+            trackingService.setStatus("TRACKING"); //start tracking
+            progressHandler.postDelayed(updateProgress, 0); //update UI based on progress
+
+            //progressHandler.postDelayed(updateProgress, 0); //update UI based on progress
+            //update(); //call update to update all UI elements
+        }
+        //on disconnected null the service reference
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            trackingService = null;
+        }
+    };
 
     private Handler progressHandler = new Handler();
     //runnable, updated every second to give live UI updates
@@ -102,6 +134,7 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
         @Override
         public void run() {
 
+            /*
             fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
                     .addOnSuccessListener(activity, new OnSuccessListener<Location>() {
                         @Override
@@ -150,15 +183,59 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
 
                             }
                         }
-                    });
+                    });*/
 
 
 
+            location = trackingService.getLastLocation();
+            if (location != null) {
+                double lat = Math.round(location.getLatitude() * 1000.000) / 1000.00;
 
-            //post a 1 second delay before updating again
+                double lng = Math.round(location.getLongitude() * 1000.000) / 1000.00;
+                LatLng pos = new LatLng(lat, lng);
+                map.clear();
+
+
+                Log.d("MAP", "LatLng" + lat + lng);
+                map.addMarker(new MarkerOptions()
+                        .position(pos)
+                        .title("Me")
+                        .icon(smallMarkerIcon));
+
+                int area = ManualData.getInstance().inArea();
+
+                if (area != 0) {
+                    Log.d("GEO", "adding artifact, ID: " + area);
+                    Artifact artifact = ManualData.getInstance().artifactsList.get(area - 1);
+                    LatLng latLng = new LatLng(artifact.getAlt(), artifact.getLng());
+                    map.addMarker(new MarkerOptions()
+                            .position(latLng));
+                }
+
+                map.addCircle(new CircleOptions()
+                        .center(pos)
+                        .radius(75)
+                        .strokeColor(Color.RED)
+                        .fillColor(0x7FDD0000));
+
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(pos)
+                        .zoom(18)
+                        .tilt(67.5f)
+                        .bearing(314)
+                        .build();
+
+
+                map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+
+                //post a 1 second delay before updating again
+
+            }
             progressHandler.postDelayed(this, 1000);
 
         }
+
     };
 
 

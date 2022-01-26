@@ -3,9 +3,13 @@ package com.example.scavengerhunt.Misc;
 import static android.provider.Settings.System.getString;
 import com.example.scavengerhunt.R;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -21,10 +25,13 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
     private static final String CHANNEL_ID = "GBRC";
     private Context mContext;
+    private NotificationManager notificationManager;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         mContext = context;
+
+        createNotificationChannel();
 
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         if (geofencingEvent.hasError()) {
@@ -44,7 +51,8 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
             if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
                 Log.d("GEO", "entered geofence : " + geofencingEvent.getTriggeringGeofences());
                 ManualData.getInstance().setActiveGeofence(Integer.parseInt(geofencingEvent.getTriggeringGeofences().get(0).getRequestId()));
-                createNotification();
+                //createNotification();
+                notificationManager.notify(0, createNotification());
             }
             if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
                 Log.d("GEO", "exited geofence");
@@ -57,11 +65,30 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         }
     }
 
-    public void createNotification() {
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "notify";
+            String description = "notifyDescription";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            notificationManager = mContext.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public Notification createNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                 .setSmallIcon(R.drawable.camping_icon_13511)
                 .setContentTitle("Artifact Nearby!")
                 .setContentText("There is an artifact nearby, use the radar to find it!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        return builder.build();
+
     }
 }

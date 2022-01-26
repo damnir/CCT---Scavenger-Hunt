@@ -78,7 +78,7 @@ public class ManualData {
     }
 
     public int getRaw() {
-        switch(activeGeofence) {
+        switch(this.activeGeofence) {
             case 1 : return this.artifact1Raw;
             case 2 : return this.artifact2Raw;
             case 3 : return this.artifact3Raw;
