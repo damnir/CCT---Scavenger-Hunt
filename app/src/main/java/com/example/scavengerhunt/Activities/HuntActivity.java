@@ -234,12 +234,12 @@ public class HuntActivity extends AppCompatActivity {
         return log;
     }
 
-    /*
+
     public void onARButtonClick(View v) {
         Intent intent = new Intent(this, AugmentedRealityActivity.class);
         startActivity(intent);
-    }*/
-
+    }
+/*
     //TEMPORARY ---------------------------------
     public void onARButtonClick(View v) {
         com.example.scavengerhunt.Entities.Log log = new com.example.scavengerhunt.Entities.Log();
@@ -252,7 +252,7 @@ public class HuntActivity extends AppCompatActivity {
         com.example.scavengerhunt.Entities.Session.getInstance().addLog(log);
         //Database.getInstance().addLog();
         Database.getInstance().testLogArtifact();
-    }
+    }*/
 
 
 

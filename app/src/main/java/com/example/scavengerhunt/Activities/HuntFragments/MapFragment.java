@@ -85,7 +85,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         latLngConverter = new LatLngConverter();
         //TEMPORARY VARIABLE - Reuse destination site object to get coordinates pls
-        finalDestText.setText(latLngConverter.latnglToDMS((float)52.935587, (float)-1.194325));
+        //finalDestText.setText(latLngConverter.latnglToDMS((float)52.935587, (float)-1.194325));
 
         return  view;
     }
@@ -151,9 +151,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             String covertedCoords = latLngConverter.latnglToDMS((float)location.getLatitude(),
                     (float)location.getLongitude());
 
-            coords.setText(covertedCoords);
-            distance.setText(distance(location, 52.935587, -1.194325));
-            time.setText(trackingService.getTime());
+            coords = getActivity().findViewById(R.id.navigate_coords);
+            distance = getActivity().findViewById(R.id.navigate_distance);
+            //finalDestText = getActivity().findViewById(R.id.navigate_final);
+            time = getActivity().findViewById(R.id.navigate_time);
+
+            try {
+                coords.setText(covertedCoords);
+                distance.setText(distance(location, 52.935587, -1.194325));
+                time.setText(trackingService.getTime());
+            }catch (NullPointerException ignored){}
+
             //post a 1 second delay before updating again
             progressHandler.postDelayed(this, 1000);
 
