@@ -86,7 +86,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.camping_icon_13511)
                 .setContentTitle("Artifact Nearby!")
                 .setContentText("There is an artifact nearby, use the radar to find it!")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         return builder.build();
 

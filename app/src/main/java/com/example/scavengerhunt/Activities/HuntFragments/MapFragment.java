@@ -120,6 +120,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         @Override
         public void run() {
             location = trackingService.getLastLocation();
+            if(location == null) return;
             double lat = Math.round(location.getLatitude() * 1000.000)/1000.00;;
             double lng = Math.round(location.getLongitude() * 1000.000)/1000.00;
             LatLng pos = new LatLng(lat, lng);

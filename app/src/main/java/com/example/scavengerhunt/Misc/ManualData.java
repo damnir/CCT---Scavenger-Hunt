@@ -90,6 +90,10 @@ public class ManualData {
         this.activeGeofence = active;
     }
 
+    public void setArtifactVoid(boolean collected) {
+        this.artifactsList.get(this.activeGeofence).setCollected(true);
+    }
+
 
 
 

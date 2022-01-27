@@ -56,7 +56,7 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap map;
     private Activity activity;
 
-    private FusedLocationProviderClient fusedLocationClient;
+    //private FusedLocationProviderClient fusedLocationClient;
     private BitmapDescriptor smallMarkerIcon;
 
     private TrackingService trackingService;
@@ -97,7 +97,7 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
         } catch (Resources.NotFoundException e) {
             Log.e("TAG", "Can't find style. Error: ", e);
         }
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+        //fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable. user);
         Bitmap smallMarker = Bitmap.createScaledBitmap(icon, 75, 75, false);
         smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
@@ -207,9 +207,12 @@ public class RadarFragment extends Fragment implements OnMapReadyCallback {
                 if (area != 0) {
                     Log.d("GEO", "adding artifact, ID: " + area);
                     Artifact artifact = ManualData.getInstance().artifactsList.get(area - 1);
-                    LatLng latLng = new LatLng(artifact.getAlt(), artifact.getLng());
-                    map.addMarker(new MarkerOptions()
-                            .position(latLng));
+
+                    if (!artifact.getCollected()) {
+                        LatLng latLng = new LatLng(artifact.getAlt(), artifact.getLng());
+                        map.addMarker(new MarkerOptions()
+                                .position(latLng));
+                    }
                 }
 
                 map.addCircle(new CircleOptions()

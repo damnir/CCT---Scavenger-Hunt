@@ -35,7 +35,9 @@ import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 
 public class AugmentedRealityActivity extends AppCompatActivity {
@@ -162,7 +164,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
                 Log.d("GEO", "CHAIR ID: " + R.raw.chair);
 
                 //placeObject(arFragment, anchor, rawId);
-                placeObject(arFragment, anchor, R.raw.chair);
+                placeObject(arFragment, anchor, rawId);
             }
             else{
                 handler.postDelayed(placeRandomly, 3000);
@@ -232,19 +234,30 @@ public class AugmentedRealityActivity extends AppCompatActivity {
         node.setOnTapListener((hitTestResult, motionEvent) -> {
             Log.d("HIT", "HIT REGISTERED");
             com.example.scavengerhunt.Entities.Log log = new com.example.scavengerhunt.Entities.Log();
-            Artifact artifact = new Artifact();
+            Artifact artifact = ManualData.getInstance().artifactsList.get(ManualData.getInstance().activeGeofence-1);
 
-            log.setStamp("13:43 Artifact Collected");
-            log.setTitle("Some Rock");
-            log.setLabel("Found at:");
-            log.setDescription("lksdnfglk;dsnf sdlkf nsdlkf jsdlkf jsdlkfdsfsdljk  jklsdf");
+            log.setStamp(getTime() + ": Artifact Collected");
+            log.setTitle(artifact.getName());
+            log.setLabel("Description:");
+            log.setDescription(artifact.getDescription());
+            log.setArtifact(artifact);
+
             com.example.scavengerhunt.Entities.Session.getInstance().addLog(log);
-            //Database.getInstance().addLog();
-            Database.getInstance().testLogArtifact();
+            Database.getInstance().addLog();
+            //Database.getInstance().testLogArtifact();
+            ManualData.getInstance().artifactsList.get(ManualData.getInstance().activeGeofence-1).setCollected(true);
             finish();
         });
 
 
+    }
+
+    public String getTime() {
+        Long time = System.currentTimeMillis();
+        String string = "%02d:%02d";
+        String text = String.format(Locale.ENGLISH, string, TimeUnit.MILLISECONDS.toHours(time),
+                TimeUnit.MILLISECONDS.toMinutes(time));
+        return text;
     }
 
 

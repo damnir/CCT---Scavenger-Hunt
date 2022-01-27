@@ -23,6 +23,14 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.scavengerhunt.Activities.HuntActivity;
 import com.example.scavengerhunt.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import android.os.Looper;
 
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +39,10 @@ public class TrackingService extends Service {
     LocationManager locationManager;
     private static final String CHANNEL_ID = "trackerChannel";
     Location lastLocation;
+
+    private LocationCallback locationCallback;
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationRequest locationRequest;
 
     private long timeStart;
 
@@ -47,12 +59,34 @@ public class TrackingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(0);
+        locationRequest.setFastestInterval(0);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    lastLocation = location;
+                }
+            }
+        };
+
         timeStart = System.currentTimeMillis();
         //create new location manager
+        /*
         locationManager =
                 (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationTracker locationListener = new LocationTracker();
+        LocationTracker locationListener = new LocationTracker();*/
         //request location updates at every 10m&5ms
+        /*
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     5, // minimum time interval between updates
@@ -60,13 +94,13 @@ public class TrackingService extends Service {
                     locationListener);
         } catch (SecurityException e) {
             Log.d("g53mdp", e.toString());
-        }
+        }*/
 
         //return if no permission for location
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        //lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
 
         //get the repo
@@ -98,6 +132,8 @@ public class TrackingService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
 
+        startLocationUpdates();
+
         //start foreground
         startForeground(1, notification); //start foreground so it doesn't get killed*/
     }
@@ -114,6 +150,13 @@ public class TrackingService extends Service {
 
     public Location getLastLocation() {
         return lastLocation;
+    }
+
+
+    private void startLocationUpdates() {
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+                locationCallback,
+                Looper.getMainLooper());
     }
 
     //location tracked implementation
