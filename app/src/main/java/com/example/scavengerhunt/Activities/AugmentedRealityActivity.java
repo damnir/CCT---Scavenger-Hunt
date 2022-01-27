@@ -241,6 +241,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
             log.setLabel("Description:");
             log.setDescription(artifact.getDescription());
             log.setArtifact(artifact);
+            log.setImage(artifact.getUrl());
 
             com.example.scavengerhunt.Entities.Session.getInstance().addLog(log);
             Database.getInstance().addLog();

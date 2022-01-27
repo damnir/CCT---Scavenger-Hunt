@@ -97,14 +97,17 @@ public class NewSessionActivity extends AppCompatActivity {
     }
 
     public void onNavigatorClick(View v) {
+        Scavenger.getInstance().setRole("Navigator");
         session.updateRole(Scavenger.getInstance().getScavengerId(), "Navigator");
     }
 
     public void onDiscovererClick(View v) {
+        Scavenger.getInstance().setRole("Discoverer");
         session.updateRole(Scavenger.getInstance().getScavengerId(), "Discoverer");
     }
 
     public void onStoryClick(View v) {
+        Scavenger.getInstance().setRole("Story Teller");
         session.updateRole(Scavenger.getInstance().getScavengerId(), "Story Teller");
     }
 

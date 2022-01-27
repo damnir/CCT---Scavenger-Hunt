@@ -94,7 +94,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataViewHolder>{
                 //image.setImageBitmap(smallMarker);
 
                 try{
-                    android.util.Log.d("IMAGE", "URI: " + log.getArtifact().getUrl());
+                    android.util.Log.d("IMAGE", "URI: " + log.getImage());
                     Picasso.get().load(log.getImage()).into(image);
                     //Picasso.get().load("https://i.imgur.com/DvpvklR.png").into(image);
                     //Picasso.get().load(R.drawable.instagram_icon_969).into(image);

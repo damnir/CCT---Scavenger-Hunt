@@ -2,6 +2,7 @@ package com.example.scavengerhunt.Misc;
 
 import static android.provider.Settings.System.getString;
 
+import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.Site;
 import com.example.scavengerhunt.Firebase.Database;
@@ -52,7 +53,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
                 geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
 
-            if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
+            if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER && Scavenger.getInstance().getRole().equals("Discoverer")){
                 Log.d("GEO", "entered geofence : " + geofencingEvent.getTriggeringGeofences());
                 ManualData.getInstance().setActiveGeofence(Integer.parseInt(geofencingEvent.getTriggeringGeofences().get(0).getRequestId()));
                 //createNotification();
