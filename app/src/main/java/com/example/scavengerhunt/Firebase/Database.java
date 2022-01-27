@@ -9,8 +9,12 @@ import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 
@@ -20,6 +24,7 @@ public class Database {
     private FirebaseAuth mAuth;
     private Session session = Session.getInstance();
     public String test = "test";
+    private List<Scavenger> scavengers;
     public enum Action {
         START,
         PAUSE,
@@ -32,7 +37,7 @@ public class Database {
 
 
     public Database() {
-
+        scavengers = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
     }
@@ -171,6 +176,32 @@ public class Database {
         });
     }
 
+    public void updateLocation(double lat, double lng) {
+        mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
+                .child("scavengers").get().addOnCompleteListener(task -> {
+
+                    if(task.isSuccessful()) {
+                        DataSnapshot ds = task.getResult();
+                        String key;
+                        scavengers.clear();
+                        for(DataSnapshot c: ds.getChildren()){
+                            key = c.getKey();
+                            Scavenger scavenger = c.getValue(Scavenger.class);
+                            scavengers.add(scavenger);
+                            if(scavenger.getUser().getName().equals(User.getInstance().getName())) {
+                                scavenger.setaLat(lat);
+                                scavenger.setLng(lng);
+                                mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
+                                        .child("scavengers").child(key).setValue(scavenger);
+                            }
+                        }
+                    }
+        });
+    }
+
+    public List<Scavenger> getAllScavengers() {
+        return this.scavengers;
+    }
 
 
 }

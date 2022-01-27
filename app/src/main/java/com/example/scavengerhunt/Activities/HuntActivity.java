@@ -94,11 +94,16 @@ public class HuntActivity extends AppCompatActivity {
 
         mapFragment = new MapFragment();
 
-        fragmentList.add(new CompassFragment());
         fragmentList.add(mapFragment);
         fragmentList.add(new LogFragment());
-        fragmentList.add(new RadarFragment());
-        fragmentList.add(new ARFragment());
+
+        if(Scavenger.getInstance().getRole().equals("Navigator")){
+            fragmentList.add(new CompassFragment());
+        }
+        if(Scavenger.getInstance().getRole().equals("Discoverer")){
+            fragmentList.add(new RadarFragment());
+            fragmentList.add(new ARFragment());
+        }
 
         pager = findViewById(R.id.pager);
         pagerAdapter = new HuntPagerAdapter(getSupportFragmentManager(), fragmentList);

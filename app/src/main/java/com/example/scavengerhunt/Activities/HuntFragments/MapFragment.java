@@ -22,6 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.scavengerhunt.Entities.Scavenger;
+import com.example.scavengerhunt.Entities.Session;
+import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.Misc.LatLngConverter;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.Misc.TrackingService;
@@ -121,23 +124,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         public void run() {
             location = trackingService.getLastLocation();
             if(location == null) return;
-            double lat = Math.round(location.getLatitude() * 1000.000)/1000.00;;
-            double lng = Math.round(location.getLongitude() * 1000.000)/1000.00;
-            LatLng pos = new LatLng(lat, lng);
+            double lat = location.getLatitude();
+            double lng = location.getLongitude();
+
+            /*
+            Scavenger.getInstance().setaLat(lat);
+            Scavenger.getInstance().setLng(lng);
+            Session.getInstance().updateScavenger();
+            Database.getInstance().updateSession();*/
+            Database.getInstance().updateLocation(lat, lng);
+
+            //LatLng pos = new LatLng(lat, lng);
             map.clear();
+            LatLng pos = new LatLng(lat, lng);
+            for(Scavenger c : Database.getInstance().getAllScavengers()) {
+                pos = new LatLng(c.getaLat(), c.getLng());
+                map.addMarker(new MarkerOptions()
+                        .position(pos)
+                        .title(c.getUser().getName())
+                        .icon(smallMarkerIcon));
+            }
 
 
             Log.d("MAP", "LatLng" + lat + lng);
-            map.addMarker(new MarkerOptions()
-                    .position(pos)
-                    .title("Me")
-                    .icon(smallMarkerIcon));
 
-            map.addCircle(new CircleOptions()
-                    .center(pos)
-                    .radius(50)
-                    .strokeColor(Color.RED)
-                    .fillColor(Color.BLUE));
 
 
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(pos, 16);
@@ -160,7 +170,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             }catch (NullPointerException ignored){}
 
             //post a 1 second delay before updating again
-            progressHandler.postDelayed(this, 1000);
+            progressHandler.postDelayed(this, 3500);
 
         }
     };

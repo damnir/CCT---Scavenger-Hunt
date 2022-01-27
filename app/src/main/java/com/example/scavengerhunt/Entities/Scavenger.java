@@ -7,8 +7,8 @@ public class Scavenger {
 
     private User user;
     //private String activeSessionId;
-    private long aLat;
-    private long aLong;
+    private double aLat;
+    private double aLong;
 
     //public enum Role {NAVIGATOR, COLLECTOR, SPECTATOR}
     public String role;
@@ -54,6 +54,12 @@ public class Scavenger {
     public String getRole(){
         return role;
     }
+
+    public void setaLat(double lat) {this.aLat = lat;}
+    public double getaLat() {return this.aLat;}
+
+    public void setLng(double lng) {this.aLong = lng;}
+    public double getLng() {return this.aLong;}
 
 
 }

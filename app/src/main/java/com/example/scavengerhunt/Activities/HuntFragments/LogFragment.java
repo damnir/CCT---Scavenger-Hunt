@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.scavengerhunt.Entities.Log;
 import com.example.scavengerhunt.Entities.Session;
-import com.example.scavengerhunt.Misc.LogAdapter;
+import com.example.scavengerhunt.Misc.Adapters.LogAdapter;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.ViewModels.LogViewModel;
 import com.google.firebase.database.DataSnapshot;

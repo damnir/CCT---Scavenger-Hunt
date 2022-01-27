@@ -11,7 +11,7 @@ import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.R;
-import com.example.scavengerhunt.Misc.SessionAdapter;
+import com.example.scavengerhunt.Misc.Adapters.SessionAdapter;
 import com.example.scavengerhunt.ViewModels.SessionViewModel;
 import com.google.firebase.database.DataSnapshot;
 
@@ -23,9 +23,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Map;
-import java.util.Objects;
 
 public class NewSessionActivity extends AppCompatActivity {
 
@@ -43,6 +40,8 @@ public class NewSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_session);
+
+        session = Session.getInstance();
 
         dbRef = Database.getInstance();
         session = Session.getInstance();

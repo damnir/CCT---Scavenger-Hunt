@@ -1,4 +1,4 @@
-package com.example.scavengerhunt.Misc;
+package com.example.scavengerhunt.Misc.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
