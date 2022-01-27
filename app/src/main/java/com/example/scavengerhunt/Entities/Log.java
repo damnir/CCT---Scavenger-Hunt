@@ -9,7 +9,7 @@ public class Log {
     private String label;
     private String stamp;
     private String description;
-    private Drawable image;
+    private String image;
     private Artifact artifact;
 
     public Log() {
@@ -54,10 +54,10 @@ public class Log {
         return this.description;
     }
 
-    public void setImage(Drawable nImage) {
+    public void setImage(String nImage) {
         this.image = nImage;
     }
-    public Drawable getImage() {
+    public String getImage() {
         return this.image;
     }
 

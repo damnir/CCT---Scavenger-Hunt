@@ -15,12 +15,16 @@ public class Session {
     private User sessionOwner;
     private List<Scavenger> scavengers;
     public List<Log> logs;
+    private List<Artifact> artifactList;
+    private List<Site> siteList;
 
     private Database dbRef = Database.getInstance();
 
     public Session(String id) {
         scavengers = new ArrayList<>();
         logs = new ArrayList<>();
+        artifactList = new ArrayList<>();
+        siteList = new ArrayList<>();
 
         dbRef = Database.getInstance();
 
@@ -80,16 +84,27 @@ public class Session {
         dbRef.updateRole(User.getInstance().getActiveSessionId(), scavengerId, role);
     }
 
+
+
     public void setLogs(List<Log> nLogs) {
         this.logs = nLogs;
     }
-
     public List<Log> getLogs() {
         return this.logs;
     }
 
     public void addLog(Log nLog) {
         logs.add(nLog);
+    }
+
+    public void addArtifact(Artifact artifact) { artifactList.add(artifact); }
+    public void addSite(Site site) { siteList.add(site); }
+
+    public void setSites(List<Site> sites) {
+        this.siteList = sites;
+    }
+    public List<Site> getSites() {
+        return this.siteList;
     }
 
 

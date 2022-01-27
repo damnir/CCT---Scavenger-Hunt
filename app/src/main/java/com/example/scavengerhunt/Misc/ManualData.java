@@ -27,6 +27,7 @@ public class ManualData {
     public Site site3;
 
     public List<Artifact> artifactsList;
+    public List<Site> siteList;
 
     public int activeGeofence;
 
@@ -63,6 +64,11 @@ public class ManualData {
         this.artifactsList.add(artifact2);
         this.artifactsList.add(artifact3);
 
+        this.siteList = new ArrayList<>();
+        this.siteList.add(site1);
+        this.siteList.add(site2);
+        this.siteList.add(site3);
+
         this.activeGeofence = 0;
     }
 
@@ -91,7 +97,11 @@ public class ManualData {
     }
 
     public void setArtifactVoid(boolean collected) {
-        this.artifactsList.get(this.activeGeofence).setCollected(true);
+        this.artifactsList.get(this.activeGeofence-1).setCollected(true);
+    }
+
+    public void setSiteVoid(boolean visited) {
+        this.siteList.get(this.activeGeofence-1).setVisited(true);
     }
 
 

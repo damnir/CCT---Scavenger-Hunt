@@ -1,6 +1,10 @@
 package com.example.scavengerhunt.Misc;
 
 import static android.provider.Settings.System.getString;
+
+import com.example.scavengerhunt.Entities.Session;
+import com.example.scavengerhunt.Entities.Site;
+import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.R;
 
 import android.app.Notification;
@@ -52,7 +56,14 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                 Log.d("GEO", "entered geofence : " + geofencingEvent.getTriggeringGeofences());
                 ManualData.getInstance().setActiveGeofence(Integer.parseInt(geofencingEvent.getTriggeringGeofences().get(0).getRequestId()));
                 //createNotification();
-                notificationManager.notify(0, createNotification());
+                int index = ManualData.getInstance().activeGeofence-1;
+
+                if(!ManualData.getInstance().siteList.get(index).getVisited()) {
+                    notificationManager.notify(0, createNotification());
+                    ManualData.getInstance().setSiteVoid(true);
+                    Session.getInstance().addSite(ManualData.getInstance().siteList.get(index));
+                    createSiteLog(ManualData.getInstance().siteList.get(index));
+                }
             }
             if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
                 Log.d("GEO", "exited geofence");
@@ -85,10 +96,24 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                 .setSmallIcon(R.drawable.camping_icon_13511)
                 .setContentTitle("Artifact Nearby!")
-                .setContentText("There is an artifact nearby, use the radar to find it!")
+                .setContentText("You discovered a new site, there is an artifact nearby, use the radar to find it!")
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         return builder.build();
+    }
+
+    public void createSiteLog(Site site) {
+        com.example.scavengerhunt.Entities.Log log = new com.example.scavengerhunt.Entities.Log();
+        log.setLabel("Description");
+        log.setTitle(site.getName());
+        log.setDescription(site.getDescription());
+        log.setImage(site.getImageUri());
+        log.setStamp("Site visited");
+
+        Session.getInstance().addLog(log);
+
+        Database.getInstance().addLog();
 
     }
+
 }

@@ -8,6 +8,7 @@ public class Site {
     private Double lat;
     private Double lng;
     private Boolean finalSite;
+    private Boolean visited;
 
     public Site() {}
 
@@ -20,6 +21,7 @@ public class Site {
         this.finalSite = finalSite;
         this.lat = lat;
         this.lng = lng;
+        this.visited = false;
     }
 
     public void setName(String name) { this.name = name; }
@@ -39,6 +41,9 @@ public class Site {
 
     public Double getLat() { return this.lat; }
     public Double getLng() { return this.lng; }
+
+    public Boolean getVisited() { return this.visited; }
+    public void setVisited(Boolean visited) {this.visited = visited; }
 
 
 
