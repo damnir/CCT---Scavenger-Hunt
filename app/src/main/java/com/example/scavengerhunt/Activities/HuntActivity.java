@@ -13,11 +13,13 @@ import com.example.scavengerhunt.Activities.HuntFragments.CompassFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.LogFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.MapFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.RadarFragment;
+import com.example.scavengerhunt.Activities.HuntFragments.StoryFragment;
 import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Entities.Log;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.Site;
+import com.example.scavengerhunt.Entities.Story;
 import com.example.scavengerhunt.Entities.User;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.Misc.GeofenceBroadcastReceiver;
@@ -96,6 +98,7 @@ public class HuntActivity extends AppCompatActivity {
 
         fragmentList.add(mapFragment);
         fragmentList.add(new LogFragment());
+        fragmentList.add(new StoryFragment());
 
         if(Scavenger.getInstance().getRole().equals("Navigator")){
             fragmentList.add(new CompassFragment());
@@ -166,6 +169,7 @@ public class HuntActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TrackingService.class);
         startService(intent);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
 
     }
 
@@ -258,6 +262,22 @@ public class HuntActivity extends AppCompatActivity {
         //Database.getInstance().addLog();
         Database.getInstance().testLogArtifact();
     }*/
+
+
+    public void testStories(View v) {
+        Story story = new Story();
+        story.setLat(52.938737);
+        story.setLng(-1.188969);
+        story.setName("Our hunt begins now innit");
+        story.setDescription("Curabitur blandit erat et libero ornare, sit amet vestibulum dolor laoreet. Proin mollis nulla metus, consequat gravida nunc porta non. Ut venenatis ipsum eget odio facilisis, vel porttitor lorem bibendum.");
+        story.setStamp("Story Fragment");
+        story.setUrl("https://firebasestorage.googleapis.com/v0/b/cct-scavenger-hunt.appspot.com/o/lakesidearts.png?alt=media&token=f0d00034-74f2-4a0b-91dc-d3e6aa0dca89");
+
+        Session.getInstance().addStory(story);
+        story.setName("Poopy 2");
+        Session.getInstance().addStory(story);
+        Database.getInstance().updateStories();
+    }
 
 
 

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
+import com.example.scavengerhunt.Entities.Story;
 import com.example.scavengerhunt.Entities.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -201,6 +202,11 @@ public class Database {
 
     public List<Scavenger> getAllScavengers() {
         return this.scavengers;
+    }
+
+    public void updateStories() {
+        mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId()).
+                child("story").setValue(Session.getInstance().stories);
     }
 
 

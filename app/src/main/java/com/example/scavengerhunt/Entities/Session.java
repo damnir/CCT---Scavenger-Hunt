@@ -17,6 +17,7 @@ public class Session {
     public List<Log> logs;
     private List<Artifact> artifactList;
     private List<Site> siteList;
+    public List<Story> stories;
 
     private Database dbRef = Database.getInstance();
 
@@ -25,6 +26,7 @@ public class Session {
         logs = new ArrayList<>();
         artifactList = new ArrayList<>();
         siteList = new ArrayList<>();
+        stories = new ArrayList<>();
 
         dbRef = Database.getInstance();
 
@@ -105,6 +107,17 @@ public class Session {
     }
     public List<Site> getSites() {
         return this.siteList;
+    }
+
+    public void addStory(Story story) {
+        this.stories.add(story);
+    }
+
+    public void setStories(List<Story> stories) {
+        this.stories = stories;
+    }
+    public List<Story> getStories() {
+        return this.stories;
     }
 
 
