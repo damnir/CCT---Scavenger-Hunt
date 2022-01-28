@@ -6,6 +6,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +38,7 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.Renderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.squareup.picasso.Picasso;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -245,7 +253,9 @@ public class AugmentedRealityActivity extends AppCompatActivity {
             Database.getInstance().addLog();
             //Database.getInstance().testLogArtifact();
             DataManager.getInstance().artifactsList.get(DataManager.getInstance().activeGeofence-1).setCollected(true);
-            finish();
+            DataManager.getInstance().activeGeofence = 0;
+
+            inflatePopup(artifact);
         });
 
 
@@ -257,6 +267,48 @@ public class AugmentedRealityActivity extends AppCompatActivity {
         String text = String.format(Locale.ENGLISH, string, TimeUnit.MILLISECONDS.toHours(time),
                 TimeUnit.MILLISECONDS.toMinutes(time));
         return text;
+    }
+
+    public void inflatePopup(Artifact artifact) {
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_view, null);
+
+        TextView stamp = popupView.findViewById(R.id.popup_stamp);
+        TextView description = popupView.findViewById(R.id.popup_description);
+        TextView title = popupView.findViewById(R.id.popup_title);
+        ImageView imageView = popupView.findViewById(R.id.popup_image);
+
+        stamp.setText("Artifact Collected!");
+        description.setText(artifact.getDescription());
+        title.setText(artifact.getName());
+        try{
+            Picasso.get().load(artifact.getUrl()).into(imageView);
+        }catch (NullPointerException e){
+            android.util.Log.d("IMAGE", "Exception: " + e);
+        };
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(findViewById(android.R.id.content).getRootView()
+                , Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window when touched
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                finish();
+                return true;
+            }
+        });
     }
 
 

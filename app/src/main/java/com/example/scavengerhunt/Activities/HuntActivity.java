@@ -79,7 +79,7 @@ public class HuntActivity extends AppCompatActivity {
     private TextView sessionText;
 
     private List<Fragment> fragmentList;
-
+    private TabLayout tabLayout;
     LiveData<DataSnapshot> liveData;
 
     SessionViewModel viewModel;
@@ -105,7 +105,7 @@ public class HuntActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(pager);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.camping_icon_13511);
+        //tabLayout.getTabAt(0).setIcon(R.drawable.camping_icon_13511);
 
         geofencingClient = LocationServices.getGeofencingClient(this);
         geofenceList = new ArrayList<>();
