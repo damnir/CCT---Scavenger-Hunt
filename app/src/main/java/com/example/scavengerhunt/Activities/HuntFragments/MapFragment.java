@@ -94,6 +94,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             TrackingService.MyBinder myBinder = (TrackingService.MyBinder) service;
             trackingService = myBinder.getService();
             trackingService.setStatus("TRACKING"); //start tracking
+            progressHandler.postDelayed(updateProgress, 2000); //update UI based on progress
+
             //progressHandler.postDelayed(updateProgress, 0); //update UI based on progress
             //update(); //call update to update all UI elements
         }
@@ -114,7 +116,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         Bitmap smallMarker = Bitmap.createScaledBitmap(icon, 75, 75, false);
         smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
 
-        progressHandler.postDelayed(updateProgress, 0); //update UI based on progress
     }
 
     private Handler progressHandler = new Handler();

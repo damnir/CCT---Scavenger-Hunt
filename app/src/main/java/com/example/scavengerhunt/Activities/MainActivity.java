@@ -17,21 +17,20 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String CHANNEL_ID = "1";
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //request location permissions
-        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-
-
-        //Intent intent = new Intent(this, CompassActivity.class);
-        //startActivity(intent);
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
 
     }
-
     public void onBeginClick(View v) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

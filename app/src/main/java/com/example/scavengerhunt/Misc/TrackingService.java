@@ -61,8 +61,8 @@ public class TrackingService extends Service {
         super.onCreate();
 
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(0);
-        locationRequest.setFastestInterval(0);
+        locationRequest.setInterval(100);
+        locationRequest.setFastestInterval(100);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -79,22 +79,10 @@ public class TrackingService extends Service {
             }
         };
 
+        startLocationUpdates();
+
+
         timeStart = System.currentTimeMillis();
-        //create new location manager
-        /*
-        locationManager =
-                (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationTracker locationListener = new LocationTracker();*/
-        //request location updates at every 10m&5ms
-        /*
-        try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    5, // minimum time interval between updates
-                    10, // minimum distance between updates, in metres
-                    locationListener);
-        } catch (SecurityException e) {
-            Log.d("g53mdp", e.toString());
-        }*/
 
         //return if no permission for location
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -132,7 +120,6 @@ public class TrackingService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
 
-        startLocationUpdates();
 
         //start foreground
         startForeground(1, notification); //start foreground so it doesn't get killed*/
@@ -159,40 +146,6 @@ public class TrackingService extends Service {
                 Looper.getMainLooper());
     }
 
-    //location tracked implementation
-    public class LocationTracker implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location location) {
-            lastLocation = location;
-            //on location changed, insert the new location if status = tracking and update last known location
-            /*if(status == Status.TRACKING) {
-                Log.d("g53mdp", location.getLatitude() + " " + location.getLongitude());
-                //mRepo.insert(new GPS((int)mRepo.getLatestId(), location.getTime(), location.getLatitude(), location.getLongitude()));
-                //lastLocation = location;
-                //addLocation(location);
-            }*/
-        }
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            // information about the signal, i.e. number of satellites
-            Log.d("g53mdp", "onStatusChanged: " + provider + " " + status);
-        }
-        @Override
-        public void onProviderEnabled(String provider) {
-            // the user enabled (for example) the GPS
-            //GPSActive = true;
-            Log.d("g53mdp", "onProviderEnabled: " + provider);
-        }
-        @Override
-        public void onProviderDisabled(String provider) {
-            // the user disabled (for example) the GPS
-            //GPSActive = false;
-            Log.d("g53mdp", "onProviderDisabled: " + provider);
-            //logLocation();
-        }
-
-    }
 
     public String getTime() {
         Long time = System.currentTimeMillis() - timeStart;

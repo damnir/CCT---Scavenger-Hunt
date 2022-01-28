@@ -63,8 +63,6 @@ public class HuntActivity extends AppCompatActivity {
     private PagerAdapter pagerAdapter;
 
     private MapFragment mapFragment;
-    private GoogleMap map;
-
     private TrackingService trackingService;
 
     private Database dbRef = Database.getInstance();
@@ -80,18 +78,11 @@ public class HuntActivity extends AppCompatActivity {
     private TextView roleText;
     private TextView sessionText;
 
+    private List<Fragment> fragmentList;
+
     LiveData<DataSnapshot> liveData;
 
     SessionViewModel viewModel;
-
-    private static final  int GALLERY_REQUEST =1;
-
-    private static final int CAMERA_REQUEST_CODE=1;
-
-    private Uri mImageUri = null;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,21 +95,8 @@ public class HuntActivity extends AppCompatActivity {
         sessionText = findViewById(R.id.navigate_sessionid);
         updateText();
 
-        List<Fragment> fragmentList = new ArrayList<>();
-
-        mapFragment = new MapFragment();
-
-        fragmentList.add(mapFragment);
-        fragmentList.add(new LogFragment());
-        fragmentList.add(new StoryFragment());
-
-        if(Scavenger.getInstance().getRole().equals("Navigator")){
-            fragmentList.add(new CompassFragment());
-        }
-        if(Scavenger.getInstance().getRole().equals("Discoverer")){
-            fragmentList.add(new RadarFragment());
-            fragmentList.add(new ARFragment());
-        }
+        fragmentList = new ArrayList<>();
+        setupFragments(Scavenger.getInstance().getRole());
 
         pager = findViewById(R.id.pager);
         pagerAdapter = new HuntPagerAdapter(getSupportFragmentManager(), fragmentList);
@@ -144,22 +122,15 @@ public class HuntActivity extends AppCompatActivity {
                 "apis.com/v0/b/cct-scavenger-hunt.appspot.com/o/highfield.png?alt=media&token=2030211" +
                 "1-6eb0-450c-8521-4986d19b75c9", true, 52.935587, -1.194325);
 
-        //https://firebasestorage.googleapis.com/v0/b/cct-scavenger-hunt.appspot.com/o/highfield.png?alt=media&token=20302111-6eb0-450c-8521-4986d19b75c9
-
         addGeofence(requestId1, site1.getLat(), site1.getLng(), 80);
         addGeofence(requestId2, finalSite.getLat(), finalSite.getLng(), 80);
 
         geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
                 .addOnSuccessListener(this, aVoid -> {
                     android.util.Log.d("GEO", "geofence added");
-                    // Geofences added
-                    // ...
                 })
                 .addOnFailureListener(this, e -> {
-                    // Failed to add geofences
-                    // ...
                     android.util.Log.d("GEO", "geofence failed to add");
-
                 });
 
         viewModel = new ViewModelProvider(this,
@@ -174,15 +145,12 @@ public class HuntActivity extends AppCompatActivity {
                 if(dataSnapshot.hasChildren()) {
                     session =  dataSnapshot.getValue(Session.class);
                 }
-
             }
         });
 
         Intent intent = new Intent(this, TrackingService.class);
         startService(intent);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-
-
     }
 
     private PendingIntent getGeofencePendingIntent() {
@@ -244,56 +212,38 @@ public class HuntActivity extends AppCompatActivity {
         sessionText.setText(Session.getInstance().getSessionId());
     }
 
-    //TEST
-    public Log addLogTest() {
-        Log log = new Log();
-        log.setStamp("13:43 Artifact Collected");
-        log.setTitle("Some Rock");
-        log.setLabel("Found at:");
-        log.setDescription("lksdnfglk;dsnf sdlkf nsdlkf jsdlkf jsdlkfdsfsdljk  jklsdf");
-
-        return log;
-    }
-
 
     public void onARButtonClick(View v) {
         Intent intent = new Intent(this, AugmentedRealityActivity.class);
         startActivity(intent);
     }
-/*
-    //TEMPORARY ---------------------------------
-    public void onARButtonClick(View v) {
-        com.example.scavengerhunt.Entities.Log log = new com.example.scavengerhunt.Entities.Log();
-        Artifact artifact = new Artifact();
 
-        log.setStamp("13:43 Artifact Collected");
-        log.setTitle("Some Rock");
-        log.setLabel("Found at:");
-        log.setDescription("lksdnfglk;dsnf sdlkf nsdlkf jsdlkf jsdlkfdsfsdljk  jklsdf");
-        com.example.scavengerhunt.Entities.Session.getInstance().addLog(log);
-        //Database.getInstance().addLog();
-        Database.getInstance().testLogArtifact();
-    }*/
-
-
-    public void testStories(View v) {
-        Story story = new Story();
-        story.setLat(52.938737);
-        story.setLng(-1.188969);
-        story.setName("Our hunt begins now innit");
-        story.setDescription("Curabitur blandit erat et libero ornare, sit amet vestibulum dolor laoreet. Proin mollis nulla metus, consequat gravida nunc porta non. Ut venenatis ipsum eget odio facilisis, vel porttitor lorem bibendum.");
-        story.setStamp("Story Fragment");
-        story.setUrl("https://firebasestorage.googleapis.com/v0/b/cct-scavenger-hunt.appspot.com/o/lakesidearts.png?alt=media&token=f0d00034-74f2-4a0b-91dc-d3e6aa0dca89");
-
-        Session.getInstance().addStory(story);
-        story.setName("Poopy 2");
-        Session.getInstance().addStory(story);
-        Database.getInstance().updateStories();
-    }
 
     public void onNewStoryClick(View v) {
         Intent intent = new Intent(this, NewStoryActivity.class);
         startActivity(intent);
+    }
+
+    private void setupFragments(String role) {
+
+        switch (role) {
+            case "Navigator" :
+                fragmentList.add(new CompassFragment());
+                fragmentList.add(new MapFragment());
+                fragmentList.add(new LogFragment());
+                break;
+            case "Discoverer" :
+                fragmentList.add(new RadarFragment());
+                fragmentList.add(new MapFragment());
+                fragmentList.add(new LogFragment());
+                fragmentList.add(new ARFragment());
+                break;
+            case "Story Teller" :
+                fragmentList.add(new StoryFragment());
+                fragmentList.add(new MapFragment());
+                fragmentList.add(new LogFragment());
+        }
+
     }
 
 

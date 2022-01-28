@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.scavengerhunt.Entities.Scavenger;
+
 import java.util.List;
 
 public class HuntPagerAdapter extends FragmentPagerAdapter {
@@ -29,11 +31,28 @@ public class HuntPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
+
+        String tab1 = "";
+        String tab2 = "Team";
+        String tab3 = "Log";
+        String tab4 = "";
+        String tab5 = "";
+
+
+        switch (Scavenger.getInstance().getRole()) {
+            case "Navigator" : tab1 = "Navigate"; break;
+            case "Discoverer" :
+                tab1 = "Radar";
+                tab4 = "Collect"; break;
+            case "Story Teller" : tab1 = "Story";
+        }
+
         switch (position){
-            case 0: return "Navigate";
-            case 1: return "Map";
-            case 2: return "Log";
-            case 3: return "Radar";
+            case 0: return tab1;
+            case 1: return tab2;
+            case 2: return tab3;
+            case 3: return tab4;
+            case 4: return tab5;
         }
 
         return "";
