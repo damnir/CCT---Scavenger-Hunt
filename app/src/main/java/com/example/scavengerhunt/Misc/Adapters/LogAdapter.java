@@ -22,6 +22,8 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataViewHolder>{
     private List<Log> data;
     private Context context;
     private LayoutInflater layoutInflater;
+    private LogAdapter.ItemClickListener clickListener;
+
 
     public LogAdapter(Context context) {
         this.data = new ArrayList<>();
@@ -72,6 +74,10 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataViewHolder>{
         public DataViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                clickListener.onItemClick(data.get(position));
+            });
             /*
             name = itemView.findViewById(R.id.scavName);
             role = itemView.findViewById(R.id.scavRole);
@@ -103,5 +109,16 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataViewHolder>{
             }
 
         }
+    }
+
+    //entry click listener
+    public void setClickListener(LogAdapter.ItemClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
+    }
+
+
+    //interface to be implemented in the main activity to register item clicks from the adapter list
+    public interface ItemClickListener {
+        void onItemClick(Log log);
     }
 }

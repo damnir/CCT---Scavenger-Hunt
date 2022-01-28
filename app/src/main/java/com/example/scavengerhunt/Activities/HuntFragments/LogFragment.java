@@ -1,5 +1,6 @@
 package com.example.scavengerhunt.Activities.HuntFragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,10 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
+import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Entities.Log;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Misc.Adapters.LogAdapter;
@@ -21,6 +30,7 @@ import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.ViewModels.LogViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
+import com.squareup.picasso.Picasso;
 
 
 public class LogFragment extends Fragment {
@@ -75,6 +85,52 @@ public class LogFragment extends Fragment {
             }
         });
 
+        adapter.setClickListener(log -> {
+            inflatePopup(log);
+        });
+
         return view;
+    }
+
+    public void inflatePopup(Log log) {
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                getActivity().getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_view, null);
+
+        TextView stamp = popupView.findViewById(R.id.popup_stamp);
+        TextView description = popupView.findViewById(R.id.popup_description);
+        TextView title = popupView.findViewById(R.id.popup_title);
+        ImageView imageView = popupView.findViewById(R.id.popup_image);
+
+        stamp.setText("Site Discovered!");
+        description.setText(log.getDescription());
+        title.setText(log.getTitle());
+        try{
+            Picasso.get().load(log.getImage()).into(imageView);
+        }catch (NullPointerException e){
+            android.util.Log.d("IMAGE", "Exception: " + e);
+        };
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(getActivity().findViewById(android.R.id.content).getRootView()
+                , Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window when touched
+        Button button = popupView.findViewById(R.id.popup_button);
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
     }
 }

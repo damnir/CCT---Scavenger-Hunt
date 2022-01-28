@@ -22,6 +22,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
             <TextView
@@ -38,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="TextView"
-                android:textAlignment="textStart"
+                android:textAlignment="center"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -58,7 +62,7 @@
                 android:textAlignment="center" />
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/popup_button"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
