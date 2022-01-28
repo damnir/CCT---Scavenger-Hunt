@@ -20,9 +20,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.scavengerhunt.Entities.Scavenger;
@@ -45,7 +52,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +76,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     private TextView distance;
     private TextView finalDestText;
     private TextView time;
+    private FloatingActionButton msgButton;
 
     private SessionAdapter adapter;
 
@@ -93,6 +103,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         final SupportMapFragment myMAPF = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         myMAPF.getMapAsync(this);
+        msgButton = view.findViewById(R.id.map_fob);
+        msgButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inflatePopup();
+            }
+        });
 
         latLngConverter = new LatLngConverter();
         //TEMPORARY VARIABLE - Reuse destination site object to get coordinates pls
@@ -152,11 +169,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             Scavenger.getInstance().setaLat(lat);
             Scavenger.getInstance().setLng(lng);
 
-            /*
-            Scavenger.getInstance().setaLat(lat);
-            Scavenger.getInstance().setLng(lng);
-            Session.getInstance().updateScavenger();
-            Database.getInstance().updateSession();*/
             Database.getInstance().updateLocation(lat, lng);
 
             //LatLng pos = new LatLng(lat, lng);
@@ -226,4 +238,39 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     adapter.setData(data);
                 });
     }
+
+
+    public void inflatePopup() {
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                getActivity().getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.chat_view, null);
+
+        TextView stamp = popupView.findViewById(R.id.message_stamp);
+        TextView message = popupView.findViewById(R.id.message_message);
+
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(getActivity().findViewById(android.R.id.content).getRootView()
+                , Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window when touched
+        ImageButton button = popupView.findViewById(R.id.messages_back);
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+
+
 }

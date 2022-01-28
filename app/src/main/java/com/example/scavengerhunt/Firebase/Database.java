@@ -3,6 +3,7 @@ package com.example.scavengerhunt.Firebase;
 import android.util.Log;
 
 import com.example.scavengerhunt.Entities.Artifact;
+import com.example.scavengerhunt.Entities.Message;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
@@ -206,6 +207,15 @@ public class Database {
     public void updateStories() {
         mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId()).
                 child("story").setValue(Session.getInstance().stories);
+    }
+
+    public void addMessage(Message message) {
+        String key = mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
+                .child("messages").push().getKey();
+
+        mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
+                .child("messages").child(key).setValue(message);
+
     }
 
 
