@@ -1,6 +1,5 @@
 package com.example.scavengerhunt.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -15,28 +14,26 @@ import com.example.scavengerhunt.Activities.HuntFragments.MapFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.RadarFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.StoryFragment;
 import com.example.scavengerhunt.Entities.Action;
-import com.example.scavengerhunt.Entities.Artifact;
-import com.example.scavengerhunt.Entities.Log;
 import com.example.scavengerhunt.Entities.Notification;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.Site;
-import com.example.scavengerhunt.Entities.Story;
 import com.example.scavengerhunt.Entities.User;
 import com.example.scavengerhunt.Firebase.Database;
+import com.example.scavengerhunt.Misc.CurrentTime;
 import com.example.scavengerhunt.Misc.GeofenceBroadcastReceiver;
 import com.example.scavengerhunt.Misc.HuntPagerAdapter;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.Misc.TrackingService;
 import com.example.scavengerhunt.ViewModels.ActionViewModel;
-import com.example.scavengerhunt.ViewModels.SessionViewModel;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 
@@ -47,19 +44,15 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
-import android.provider.MediaStore;
-import android.provider.SyncStateContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +76,9 @@ public class HuntActivity extends AppCompatActivity {
     private TextView nameText;
     private TextView roleText;
     private TextView sessionText;
+    private TextView timeText;
+
+    private CurrentTime currentTime;
 
     private List<Fragment> fragmentList;
     private TabLayout tabLayout;
@@ -100,6 +96,7 @@ public class HuntActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt);
 
+        currentTime = new CurrentTime();
 
         createNotificationChannel();
 
@@ -107,6 +104,7 @@ public class HuntActivity extends AppCompatActivity {
         nameText = findViewById(R.id.navigate_name);
         roleText = findViewById(R.id.navigate_role);
         sessionText = findViewById(R.id.navigate_sessionid);
+        timeText = findViewById(R.id.navigate_time);
         updateText();
 
         fragmentList = new ArrayList<>();
@@ -126,18 +124,25 @@ public class HuntActivity extends AppCompatActivity {
 
         String requestId1 = "1";
         String requestId2 = "2";
+        String requestId3 = "3";
+
 
         Site site1 = new Site("UP Intersection", "Some random text",
                 "https://firebasestorage.googleapis.com/v0/b/cct-scavenger-hunt.appspot.com/o/lakes" +
                         "idearts.png?alt=media&token=f0d00034-74f2-4a0b-91dc-d3e6aa0dca89",
                 false, 52.937945, -1.189676);
 
-        Site finalSite = new Site("Highfield Park", "Some random text", "https://firebasestorage.google" +
+        Site site2 = new Site("Highfield Park", "Some random text", "https://firebasestorage.google" +
                 "apis.com/v0/b/cct-scavenger-hunt.appspot.com/o/highfield.png?alt=media&token=2030211" +
-                "1-6eb0-450c-8521-4986d19b75c9", true, 52.935587, -1.194325);
+                "1-6eb0-450c-8521-4986d19b75c9", false, 52.935587, -1.194325);
+
+        Site site3 = new Site("Highfield Park", "Some random text", "https://firebasestorage.google" +
+                "apis.com/v0/b/cct-scavenger-hunt.appspot.com/o/highfield.png?alt=media&token=2030211" +
+                "1-6eb0-450c-8521-4986d19b75c9", true, 52.933083, -1.201410);
 
         addGeofence(requestId1, site1.getLat(), site1.getLng(), 80);
-        addGeofence(requestId2, finalSite.getLat(), finalSite.getLng(), 80);
+        addGeofence(requestId2, site2.getLat(), site2.getLng(), 80);
+        addGeofence(requestId3, site3.getLat(), site3.getLng(), 80);
 
         geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
                 .addOnSuccessListener(this, aVoid -> {
@@ -165,7 +170,13 @@ public class HuntActivity extends AppCompatActivity {
                         action =  c.getValue(Action.class);
                         //c.getRef().removeValue();
                     }
-                    dataSnapshot.getRef().removeValue();
+                    try {
+                        if(Session.getInstance().getOwner().getName().equals(Scavenger.getInstance().getUser().getName()))
+                        {
+                            dataSnapshot.getRef().removeValue();
+                        }
+                    }catch (NullPointerException ignored){}
+
                     manageAction(action);
                 }
             }
@@ -175,6 +186,8 @@ public class HuntActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TrackingService.class);
         startService(intent);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+        progressHandler.post(updateProgress);
     }
 
     private PendingIntent getGeofencePendingIntent() {
@@ -233,7 +246,7 @@ public class HuntActivity extends AppCompatActivity {
     private void updateText() {
         nameText.setText(User.getInstance().getName());
         roleText.setText(Scavenger.getInstance().getRole());
-        sessionText.setText(Session.getInstance().getSessionId());
+        sessionText.setText(User.getInstance().getActiveSessionId());
     }
 
 
@@ -294,6 +307,11 @@ public class HuntActivity extends AppCompatActivity {
                 notificationManager.notify(0, Notification.getInstance().
                         newStoryNotification(this, CHANNEL_ID));
                 break;
+
+            case "final" :
+                Intent intent = new Intent(this, EndActivity.class);
+                startActivity(intent);
+                finish();
         }
     }
 
@@ -312,6 +330,20 @@ public class HuntActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
+
+    private Handler progressHandler = new Handler();
+    //runnable, updated every second to give live UI updates
+    private Runnable updateProgress = new Runnable() {
+        @Override
+        public void run() {
+
+            timeText.setText(currentTime.getElapsed());
+
+            //post a 1 second delay before updating again
+            progressHandler.postDelayed(this, 1000);
+
+        }
+    };
 
 
 

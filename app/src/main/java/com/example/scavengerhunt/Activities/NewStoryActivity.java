@@ -169,7 +169,7 @@ public class NewStoryActivity extends AppCompatActivity {
                                         com.example.scavengerhunt.Entities.Log log = new com.example.scavengerhunt.Entities.Log();
                                         log.setImage(uri.toString());
                                         log.setLabel(story.getName());
-                                        log.setStamp(story.getStamp());
+                                        log.setStamp("Story Fragment");
                                         log.setDescription(story.getDescription());
                                         log.setType("story");
 

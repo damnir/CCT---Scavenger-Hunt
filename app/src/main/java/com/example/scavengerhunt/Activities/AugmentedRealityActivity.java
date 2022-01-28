@@ -59,6 +59,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
     private TextView scanMessage;
     private AnchorNode anchorNode;
     private TransformableNode node;
+    private Boolean finalArtifact = false;
 
 
     @Override
@@ -255,6 +256,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
             Database.getInstance().addLog();
             //Database.getInstance().testLogArtifact();
             DataManager.getInstance().artifactsList.get(DataManager.getInstance().activeGeofence-1).setCollected(true);
+            if(DataManager.getInstance().activeGeofence-1 == 2) finalArtifact = true;
             DataManager.getInstance().activeGeofence = 0;
 
             inflatePopup(artifact);
@@ -311,6 +313,9 @@ public class AugmentedRealityActivity extends AppCompatActivity {
                 Action action = new Action();
                 action.setType("artifact");
                 action.setData1(artifact.getName());
+                if(finalArtifact) {
+                    action.setType("final");
+                }
                 Database.getInstance().newAction(action);
                 finish();
                 return true;

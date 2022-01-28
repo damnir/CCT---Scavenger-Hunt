@@ -95,6 +95,7 @@ public class CompassFragment extends Fragment {
             public void onNewAzimuth(final float azimuth) {
                 // UI updates only in UI thread
                 // https://stackoverflow.com/q/11140285/444966
+                if(getActivity() == null) return;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

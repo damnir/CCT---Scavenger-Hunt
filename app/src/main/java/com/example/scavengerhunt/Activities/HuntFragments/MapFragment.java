@@ -233,15 +233,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             String covertedCoords = latLngConverter.latnglToDMS((float)location.getLatitude(),
                     (float)location.getLongitude());
 
+            if(getActivity() == null) return;
             coords = getActivity().findViewById(R.id.navigate_coords);
             distance = getActivity().findViewById(R.id.navigate_distance);
             finalDestText = getActivity().findViewById(R.id.navigate_final);
-            time = getActivity().findViewById(R.id.navigate_time);
+            //time = getActivity().findViewById(R.id.navigate_time);
 
             try {
                 coords.setText(covertedCoords);
                 distance.setText(distance(location, 52.935587, -1.194325));
-                time.setText(trackingService.getTime());
+                //time.setText(trackingService.getTime());
                 finalDestText.setText(latLngConverter.latnglToDMS((float)52.935587, (float)-1.194325));
 
             }catch (NullPointerException ignored){}
