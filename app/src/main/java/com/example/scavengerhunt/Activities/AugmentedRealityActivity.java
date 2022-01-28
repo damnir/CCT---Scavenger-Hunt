@@ -307,6 +307,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 popupWindow.dismiss();
+                finish();
                 return true;
             }
         });
