@@ -72,6 +72,11 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.DataViewHold
     //recycler viewholder
     class DataViewHolder extends RecyclerView.ViewHolder implements OnMapReadyCallback{
 
+        public DataViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+        }
+
         TextView stamp = itemView.findViewById(R.id.story_stamp);
         TextView title = itemView.findViewById(R.id.story_title);
         TextView description = itemView.findViewById(R.id.story_description);
@@ -79,11 +84,6 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.DataViewHold
         MapView map = itemView.findViewById(R.id.mapView);
 
         Story mStory;
-
-        public DataViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-        }
 
         public void bind(Story story) {
             /*if(scavenger != null) {
@@ -118,7 +118,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.DataViewHold
                     .title(mStory.getName())
             );
 
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(pos, 16);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(pos, 14);
             googleMap.moveCamera(cameraUpdate);
         }
     }

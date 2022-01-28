@@ -37,6 +37,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.Calendar;
 
 public class NewStoryActivity extends AppCompatActivity {
 
@@ -101,7 +102,7 @@ public class NewStoryActivity extends AppCompatActivity {
     private Uri getImageUri(Context applicationContext, Bitmap photo) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), photo, "Title", null);
+        String path = MediaStore.Images.Media.insertImage(applicationContext.getContentResolver(), photo, "IMG_" + Calendar.getInstance().getTime(), null);
         return Uri.parse(path);
     }
 
@@ -128,6 +129,7 @@ public class NewStoryActivity extends AppCompatActivity {
         //story.setUrl(mImageUri.toString());
         story.setLat(Scavenger.getInstance().getaLat());
         story.setLng(Scavenger.getInstance().getLng());
+        Log.d("STORY", "lat: " + story.getLat() + " Long: " + story.getLng());
         story.setStamp("New Story Fragment");
 
         FirebaseStorage str = FirebaseStorage.getInstance();

@@ -28,13 +28,13 @@
             <ImageView
                 android:id="@+id/story_image"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="320dp"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"
                 android:layout_width="383dp"
-                android:layout_height="130dp"
+                android:layout_height="96dp"
                 android:layout_gravity="center" />
 
             <TextView
@@ -52,21 +52,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Description" />
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="50dp"
-                android:layout_height="0dp"
-                android:layout_gravity="right"
-                android:layout_marginLeft="2dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:padding="5dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/instagram_icon_969" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
