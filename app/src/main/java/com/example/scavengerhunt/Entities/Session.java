@@ -15,7 +15,7 @@ public class Session {
     private User sessionOwner;
     private List<Scavenger> scavengers;
     public List<Log> logs;
-    private List<Artifact> artifactList;
+    public List<Artifact> artifactList;
     private List<Site> siteList;
     public List<Story> stories;
     public List<Message> messages;
@@ -129,6 +129,8 @@ public class Session {
     }
 
     public void addMessage(Message message) { messages.add(message); }
+
+    public void setArtifactList(List<Artifact> list) { this.artifactList = list; }
 
 
 

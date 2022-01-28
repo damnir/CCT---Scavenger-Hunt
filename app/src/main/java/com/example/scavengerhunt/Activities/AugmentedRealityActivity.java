@@ -316,6 +316,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
                 if(finalArtifact) {
                     action.setType("final");
                 }
+                Database.getInstance().addArtifact(artifact);
                 Database.getInstance().newAction(action);
                 finish();
                 return true;

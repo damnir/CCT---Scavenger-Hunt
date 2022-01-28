@@ -6,6 +6,7 @@ import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Entities.Message;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
+import com.example.scavengerhunt.Entities.Site;
 import com.example.scavengerhunt.Entities.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -225,6 +226,22 @@ public class Database {
 
         mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
                 .child("actions").child(key).setValue(action);
+    }
+
+    public void addArtifact(Artifact artifact) {
+        String key = mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
+                .child("artifacts").push().getKey();
+
+        mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
+                .child("artifacts").child(key).setValue(artifact);
+    }
+
+    public void addSite(Site site) {
+        String key = mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
+                .child("sites").push().getKey();
+
+        mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
+                .child("sites").child(key).setValue(site);
     }
 
 

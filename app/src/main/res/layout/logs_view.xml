@@ -41,7 +41,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/log_image"
+                android:id="@+id/artifact_image"
                 android:layout_width="135dp"
                 android:layout_height="135dp"
                 android:layout_gravity="center|start"
@@ -67,7 +67,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/log_label"
+                    android:id="@+id/artifact_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="5dp"

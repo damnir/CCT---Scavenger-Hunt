@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Entities.Log;
 import com.example.scavengerhunt.R;
 import com.squareup.picasso.Picasso;
@@ -18,14 +18,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataViewHolder>{
-    private List<Log> data;
+public class CompactArtifactAdapter extends RecyclerView.Adapter<CompactArtifactAdapter.DataViewHolder>{
+    private List<Artifact> data;
     private Context context;
     private LayoutInflater layoutInflater;
-    private LogAdapter.ItemClickListener clickListener;
+    private CompactArtifactAdapter.ItemClickListener clickListener;
 
 
-    public LogAdapter(Context context) {
+    public CompactArtifactAdapter(Context context) {
         this.data = new ArrayList<>();
         this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -33,14 +33,14 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataViewHolder>{
 
     @NonNull
     @Override
-    public LogAdapter.DataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CompactArtifactAdapter.DataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflate the itemView
-        View itemView = layoutInflater.inflate(R.layout.logs_view, parent, false);
-        return new LogAdapter.DataViewHolder(itemView);
+        View itemView = layoutInflater.inflate(R.layout.artifact_compact, parent, false);
+        return new CompactArtifactAdapter.DataViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LogAdapter.DataViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CompactArtifactAdapter.DataViewHolder holder, int position) {
         holder.bind(data.get(position));
     }
 
@@ -50,7 +50,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataViewHolder>{
     }
 
     //set the data once observer has notified in the activity
-    public void setData(List<Log> newData) {
+    public void setData(List<Artifact> newData) {
         if (data != null) {
             data.clear();
             data.addAll(newData);
@@ -63,11 +63,8 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataViewHolder>{
     //recycler viewholder
     class DataViewHolder extends RecyclerView.ViewHolder{
 
-        TextView title = itemView.findViewById(R.id.log_title);
-        TextView label = itemView.findViewById(R.id.artifact_label);
-        TextView description = itemView.findViewById(R.id.log_description);
-        TextView stamp = itemView.findViewById(R.id.log_stamp);
-        ImageView image = (ImageView) itemView.findViewById(R.id.artifact_image);
+        TextView title;
+        ImageView imageView;
 
 
 
@@ -78,28 +75,19 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataViewHolder>{
                 int position = getAdapterPosition();
                 clickListener.onItemClick(data.get(position));
             });
-            /*
-            name = itemView.findViewById(R.id.scavName);
-            role = itemView.findViewById(R.id.scavRole);
-            */
+            title = itemView.findViewById(R.id.artifact_label);
+            imageView = itemView.findViewById(R.id.artifact_image);
         }
 
-        public void bind(Log log) {
+        public void bind(Artifact artifact) {
 
-            if( log != null) {
-                title.setText(log.getTitle());
-                label.setText(log.getLabel());
-                description.setText(log.getDescription());
-                stamp.setText(log.getStamp());
+            if( artifact != null) {
 
-                //Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable._0trophy);
-                //Bitmap smallMarker = Bitmap.createScaledBitmap(icon, 135, 135, false);
+                title.setText(artifact.getName());
 
-                //image.setImageBitmap(smallMarker);
 
                 try{
-                    android.util.Log.d("IMAGE", "URI: " + log.getImage());
-                    Picasso.get().load(log.getImage()).into(image);
+                    Picasso.get().load(artifact.getUrl()).into(imageView);
                     //Picasso.get().load("https://i.imgur.com/DvpvklR.png").into(image);
                     //Picasso.get().load(R.drawable.instagram_icon_969).into(image);
                 }catch (NullPointerException e){
@@ -112,13 +100,13 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataViewHolder>{
     }
 
     //entry click listener
-    public void setClickListener(LogAdapter.ItemClickListener itemClickListener) {
+    public void setClickListener(CompactArtifactAdapter.ItemClickListener itemClickListener) {
         this.clickListener = itemClickListener;
     }
 
 
     //interface to be implemented in the main activity to register item clicks from the adapter list
     public interface ItemClickListener {
-        void onItemClick(Log log);
+        void onItemClick(Artifact log);
     }
 }

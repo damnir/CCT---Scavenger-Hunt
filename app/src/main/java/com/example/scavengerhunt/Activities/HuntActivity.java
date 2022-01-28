@@ -1,5 +1,6 @@
 package com.example.scavengerhunt.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -30,10 +31,8 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 
@@ -48,7 +47,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -103,8 +101,8 @@ public class HuntActivity extends AppCompatActivity {
         session = Session.getInstance();
         nameText = findViewById(R.id.navigate_name);
         roleText = findViewById(R.id.navigate_role);
-        sessionText = findViewById(R.id.navigate_sessionid);
-        timeText = findViewById(R.id.navigate_time);
+        sessionText = findViewById(R.id.end_sessionID);
+        timeText = findViewById(R.id.end_time);
         updateText();
 
         fragmentList = new ArrayList<>();
@@ -309,10 +307,21 @@ public class HuntActivity extends AppCompatActivity {
                 break;
 
             case "final" :
-                Intent intent = new Intent(this, EndActivity.class);
-                startActivity(intent);
-                finish();
+                Database.getInstance().getDBRef().child("active_sessions")
+                        .child(User.getInstance().getActiveSessionId()).child("time").setValue(currentTime.getElapsed()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        end();
+                    }
+                });
+
         }
+    }
+
+    private void end() {
+        Intent intent = new Intent(this, EndActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void createNotificationChannel() {

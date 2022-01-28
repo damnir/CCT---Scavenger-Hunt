@@ -112,6 +112,7 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
         Session.getInstance().addLog(log);
 
+        Database.getInstance().addSite(site);
         Database.getInstance().addLog();
 
     }
