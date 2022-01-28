@@ -166,6 +166,7 @@ public class NewStoryActivity extends AppCompatActivity {
                                         story.setUrl(uri.toString());
                                         Session.getInstance().addStory(story);
                                         Database.getInstance().updateStories();
+                                        finish();
                                     }
                                 });
                             })
