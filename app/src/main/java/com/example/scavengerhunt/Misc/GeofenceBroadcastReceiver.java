@@ -1,5 +1,6 @@
 package com.example.scavengerhunt.Misc;
 
+import com.example.scavengerhunt.Entities.Action;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.Site;
@@ -55,7 +56,10 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
                 int index = DataManager.getInstance().activeGeofence-1;
 
                 if(!DataManager.getInstance().siteList.get(index).getVisited()) {
-                    notificationManager.notify(0, createNotification());
+                    //notificationManager.notify(0, createNotification());
+                    Action action = new Action();
+                    action.setType("site");
+                    Database.getInstance().newAction(action);
                     DataManager.getInstance().setSiteVoid(true);
                     Session.getInstance().addSite(DataManager.getInstance().siteList.get(index));
                     createSiteLog(DataManager.getInstance().siteList.get(index));

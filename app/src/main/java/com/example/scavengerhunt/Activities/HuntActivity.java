@@ -14,8 +14,10 @@ import com.example.scavengerhunt.Activities.HuntFragments.LogFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.MapFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.RadarFragment;
 import com.example.scavengerhunt.Activities.HuntFragments.StoryFragment;
+import com.example.scavengerhunt.Entities.Action;
 import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Entities.Log;
+import com.example.scavengerhunt.Entities.Notification;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.Site;
@@ -26,6 +28,7 @@ import com.example.scavengerhunt.Misc.GeofenceBroadcastReceiver;
 import com.example.scavengerhunt.Misc.HuntPagerAdapter;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.Misc.TrackingService;
+import com.example.scavengerhunt.ViewModels.ActionViewModel;
 import com.example.scavengerhunt.ViewModels.SessionViewModel;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -37,6 +40,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -45,6 +50,7 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
@@ -82,12 +88,20 @@ public class HuntActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     LiveData<DataSnapshot> liveData;
 
-    SessionViewModel viewModel;
+    private static final String CHANNEL_ID = "HUNTACT";
+    private NotificationManager notificationManager;
+
+    private Action action;
+
+    ActionViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hunt);
+
+
+        createNotificationChannel();
 
         session = Session.getInstance();
         nameText = findViewById(R.id.navigate_name);
@@ -133,21 +147,30 @@ public class HuntActivity extends AppCompatActivity {
                     android.util.Log.d("GEO", "geofence failed to add");
                 });
 
-        /*
+
         viewModel = new ViewModelProvider(this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(SessionViewModel.class);
+                ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(ActionViewModel.class);
 
         viewModel.updateDBReference();
 
-        liveData = viewModel.getUsersLiveDataSS();
+        liveData = viewModel.getActionsLiveData();
+
+        Database.getInstance().getDBRef().child("active_sessions").child(User.getInstance().getActiveSessionId()).child("actions").removeValue();
+
 
         liveData.observe(this, dataSnapshot -> {
             if (dataSnapshot != null) {
                 if(dataSnapshot.hasChildren()) {
-                    session =  dataSnapshot.getValue(Session.class);
+                    for(DataSnapshot c : dataSnapshot.getChildren()) {
+                        action =  c.getValue(Action.class);
+                        //c.getRef().removeValue();
+                    }
+                    dataSnapshot.getRef().removeValue();
+                    manageAction(action);
                 }
             }
-        });*/
+        });
+
 
         Intent intent = new Intent(this, TrackingService.class);
         startService(intent);
@@ -245,6 +268,49 @@ public class HuntActivity extends AppCompatActivity {
                 fragmentList.add(new LogFragment());
         }
 
+    }
+
+    public void manageAction(Action action) {
+        switch(action.getType()) {
+            case "artifact" :
+                notificationManager.notify(0, Notification.getInstance().
+                        newArtifactNotification(this, CHANNEL_ID, action.getData1()));
+                break;
+
+            case "site" :
+                notificationManager.notify(0, Notification.getInstance().
+                        newSiteNotification(this, CHANNEL_ID));
+                break;
+
+            case "message" :
+                if(action.getData1().contains(User.getInstance().getName())) break;
+                notificationManager.notify(0, Notification.getInstance().
+                        newMessageNotification(this, CHANNEL_ID,
+                                action.getData1(), action.getData2()));
+                break;
+
+            case "story" :
+                if(Scavenger.getInstance().getRole().equals("Story Teller")) break;
+                notificationManager.notify(0, Notification.getInstance().
+                        newStoryNotification(this, CHANNEL_ID));
+                break;
+        }
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "notify";
+            String description = "notifyDescription";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            notificationManager = this.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
 

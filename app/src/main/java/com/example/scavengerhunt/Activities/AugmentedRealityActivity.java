@@ -17,6 +17,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.scavengerhunt.Entities.Action;
 import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.Misc.CameraPermissionHelper;
@@ -307,6 +308,10 @@ public class AugmentedRealityActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 popupWindow.dismiss();
+                Action action = new Action();
+                action.setType("artifact");
+                action.setData1(artifact.getName());
+                Database.getInstance().newAction(action);
                 finish();
                 return true;
             }

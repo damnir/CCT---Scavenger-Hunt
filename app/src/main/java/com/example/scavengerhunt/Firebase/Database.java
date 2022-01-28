@@ -219,5 +219,13 @@ public class Database {
 
     }
 
+    public void newAction(com.example.scavengerhunt.Entities.Action action) {
+        String key = mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
+                .child("actions").push().getKey();
+
+        mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
+                .child("actions").child(key).setValue(action);
+    }
+
 
 }

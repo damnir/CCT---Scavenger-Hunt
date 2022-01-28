@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.scavengerhunt.Entities.Action;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.Story;
@@ -165,6 +166,18 @@ public class NewStoryActivity extends AppCompatActivity {
                                         storageUri = uri;
                                         story.setUrl(uri.toString());
                                         Session.getInstance().addStory(story);
+                                        com.example.scavengerhunt.Entities.Log log = new com.example.scavengerhunt.Entities.Log();
+                                        log.setImage(uri.toString());
+                                        log.setLabel(story.getName());
+                                        log.setStamp(story.getStamp());
+                                        log.setDescription(story.getDescription());
+                                        log.setType("story");
+
+                                        Action action = new Action();
+                                        action.setType("story");
+                                        Database.getInstance().newAction(action);
+                                        Session.getInstance().addLog(log);
+                                        Database.getInstance().addLog();
                                         Database.getInstance().updateStories();
                                         finish();
                                     }

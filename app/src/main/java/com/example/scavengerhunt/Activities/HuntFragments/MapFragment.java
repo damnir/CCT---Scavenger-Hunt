@@ -35,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.scavengerhunt.Entities.Action;
 import com.example.scavengerhunt.Entities.Message;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
@@ -327,6 +328,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 message.setStamp(User.getInstance().getName());
                 Session.getInstance().addMessage(message);
                 Log.d("MESSAGE", "messgae sent");
+
+                Action action = new Action();
+                action.setType("message");
+                action.setData1(message.getStamp());
+                action.setData2(message.getMessage());
+                Database.getInstance().newAction(action);
                 Database.getInstance().addMessage(message);
             }
         });
