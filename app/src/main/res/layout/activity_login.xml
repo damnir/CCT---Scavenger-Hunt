@@ -196,15 +196,6 @@
             android:layout_width="match_parent"
             android:layout_height="111dp" />
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="CONTINUE AS GUEST"
-            android:textAlignment="center"
-            android:textColor="#1E88E5"
-            android:textSize="18sp"
-            android:textStyle="bold" />
     </LinearLayout>
 
     <EditText
@@ -253,32 +244,5 @@
         app:constraint_referenced_ids="editName,textView18,floatingActionButton2"
         tools:layout_editor_absoluteX="208dp"
         tools:layout_editor_absoluteY="415dp" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="51dp"
-        android:layout_marginEnd="211dp"
-        android:layout_marginBottom="64dp"
-        android:onClick="adminLogin"
-        android:text="Admin Login"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="testLogin"
-        android:text="Test Login"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button4"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.037" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

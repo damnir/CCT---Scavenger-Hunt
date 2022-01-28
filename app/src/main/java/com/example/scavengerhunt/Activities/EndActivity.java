@@ -199,9 +199,9 @@ public class EndActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
 
-
-
-
+    public void end (View v) {
+        finish();
     }
 }

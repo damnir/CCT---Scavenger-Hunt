@@ -65,9 +65,11 @@ public class NewSessionActivity extends AppCompatActivity {
 
         liveData.observe(this, dataSnapshot -> {
             if (dataSnapshot != null) {
+                try {
                     session =  dataSnapshot.getValue(Session.class);
                     adapter.setData(session.getScavengers());
                     sessionIdText.setText(session.getSessionId());
+                }catch (NullPointerException ignored) {}
             }
         });
 
