@@ -110,7 +110,7 @@ public class Session {
     }
 
     public void addStory(Story story) {
-        this.stories.add(story);
+        stories.add(story);
     }
 
     public void setStories(List<Story> stories) {

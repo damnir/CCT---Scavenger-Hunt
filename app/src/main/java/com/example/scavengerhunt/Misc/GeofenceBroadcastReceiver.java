@@ -1,7 +1,5 @@
 package com.example.scavengerhunt.Misc;
 
-import static android.provider.Settings.System.getString;
-
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.Site;
@@ -22,9 +20,6 @@ import androidx.core.app.NotificationCompat;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
-
-
-import java.util.List;
 
 public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
@@ -55,20 +50,20 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
             if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER && Scavenger.getInstance().getRole().equals("Discoverer")){
                 Log.d("GEO", "entered geofence : " + geofencingEvent.getTriggeringGeofences());
-                ManualData.getInstance().setActiveGeofence(Integer.parseInt(geofencingEvent.getTriggeringGeofences().get(0).getRequestId()));
+                DataManager.getInstance().setActiveGeofence(Integer.parseInt(geofencingEvent.getTriggeringGeofences().get(0).getRequestId()));
                 //createNotification();
-                int index = ManualData.getInstance().activeGeofence-1;
+                int index = DataManager.getInstance().activeGeofence-1;
 
-                if(!ManualData.getInstance().siteList.get(index).getVisited()) {
+                if(!DataManager.getInstance().siteList.get(index).getVisited()) {
                     notificationManager.notify(0, createNotification());
-                    ManualData.getInstance().setSiteVoid(true);
-                    Session.getInstance().addSite(ManualData.getInstance().siteList.get(index));
-                    createSiteLog(ManualData.getInstance().siteList.get(index));
+                    DataManager.getInstance().setSiteVoid(true);
+                    Session.getInstance().addSite(DataManager.getInstance().siteList.get(index));
+                    createSiteLog(DataManager.getInstance().siteList.get(index));
                 }
             }
             if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
                 Log.d("GEO", "exited geofence");
-                ManualData.getInstance().setActiveGeofence(0);
+                DataManager.getInstance().setActiveGeofence(0);
             }
 
 

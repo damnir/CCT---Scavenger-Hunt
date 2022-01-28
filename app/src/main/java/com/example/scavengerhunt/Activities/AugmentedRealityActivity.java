@@ -2,19 +2,17 @@ package com.example.scavengerhunt.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Firebase.Database;
 import com.example.scavengerhunt.Misc.CameraPermissionHelper;
-import com.example.scavengerhunt.Misc.ManualData;
+import com.example.scavengerhunt.Misc.DataManager;
 import com.example.scavengerhunt.R;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.ArCoreApk;
@@ -159,7 +157,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
                 int randPlane = 0;
                 Pose pose = arrPlanes[randPlane].getCenterPose();
                 Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pose);
-                int rawId = ManualData.getInstance().getRaw();
+                int rawId = DataManager.getInstance().getRaw();
                 Log.d("GEO", "RAW ID: " + rawId);
                 Log.d("GEO", "CHAIR ID: " + R.raw.chair);
 
@@ -234,7 +232,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
         node.setOnTapListener((hitTestResult, motionEvent) -> {
             Log.d("HIT", "HIT REGISTERED");
             com.example.scavengerhunt.Entities.Log log = new com.example.scavengerhunt.Entities.Log();
-            Artifact artifact = ManualData.getInstance().artifactsList.get(ManualData.getInstance().activeGeofence-1);
+            Artifact artifact = DataManager.getInstance().artifactsList.get(DataManager.getInstance().activeGeofence-1);
 
             log.setStamp(getTime() + ": Artifact Collected");
             log.setTitle(artifact.getName());
@@ -246,7 +244,7 @@ public class AugmentedRealityActivity extends AppCompatActivity {
             com.example.scavengerhunt.Entities.Session.getInstance().addLog(log);
             Database.getInstance().addLog();
             //Database.getInstance().testLogArtifact();
-            ManualData.getInstance().artifactsList.get(ManualData.getInstance().activeGeofence-1).setCollected(true);
+            DataManager.getInstance().artifactsList.get(DataManager.getInstance().activeGeofence-1).setCollected(true);
             finish();
         });
 

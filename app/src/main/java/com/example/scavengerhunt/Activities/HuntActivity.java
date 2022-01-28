@@ -42,12 +42,18 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.MediaStore;
 import android.provider.SyncStateContract;
 import android.view.View;
 import android.widget.TextView;
 
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +83,12 @@ public class HuntActivity extends AppCompatActivity {
     LiveData<DataSnapshot> liveData;
 
     SessionViewModel viewModel;
+
+    private static final  int GALLERY_REQUEST =1;
+
+    private static final int CAMERA_REQUEST_CODE=1;
+
+    private Uri mImageUri = null;
 
 
 
@@ -278,6 +290,13 @@ public class HuntActivity extends AppCompatActivity {
         Session.getInstance().addStory(story);
         Database.getInstance().updateStories();
     }
+
+    public void onNewStoryClick(View v) {
+        Intent intent = new Intent(this, NewStoryActivity.class);
+        startActivity(intent);
+    }
+
+
 
 
 

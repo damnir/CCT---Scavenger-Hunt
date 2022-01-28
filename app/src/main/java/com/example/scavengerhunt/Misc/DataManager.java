@@ -1,18 +1,15 @@
 package com.example.scavengerhunt.Misc;
 
-import android.graphics.drawable.Drawable;
-
 import com.example.scavengerhunt.Entities.Artifact;
-import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Site;
 import com.example.scavengerhunt.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManualData {
+public class DataManager {
 
-    private static ManualData INSTANCE = new ManualData();
+    private static DataManager INSTANCE = new DataManager();
 
     public Artifact artifact1;
     public Artifact artifact2;
@@ -31,7 +28,7 @@ public class ManualData {
 
     public int activeGeofence;
 
-    public ManualData() {
+    public DataManager() {
         this.artifact1 = new Artifact("2100BC Chair", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent pulvinar vitae tortor sed posuere. Pellentesque ac neque libero. Sed iaculis tortor eu porta mattis. Aliquam venenatis lobortis lacinia. Proin blandit faucibus porttitor.",
                 "https://firebasestorage.googleapis.com/v0/b/cct-scavenger-hunt.appspot.com/o/chair.png?alt=media&token=c7c9cd6d-2e19-400a-91c3-2860fdec865d",
                 52.938268, -1.189575);
@@ -72,9 +69,9 @@ public class ManualData {
         this.activeGeofence = 0;
     }
 
-    public static ManualData getInstance() {
+    public static DataManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new ManualData();
+            INSTANCE = new DataManager();
         }
         return INSTANCE;
     }

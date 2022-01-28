@@ -1,14 +1,11 @@
 package com.example.scavengerhunt.Firebase;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.example.scavengerhunt.Entities.Artifact;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
-import com.example.scavengerhunt.Entities.Story;
 import com.example.scavengerhunt.Entities.User;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +43,8 @@ public class Database {
     public static Database getInstance() {
         return INSTANCE;
     }
+
+    public DatabaseReference getDBRef() { return this.mDatabase; }
 
     public void writeNewUser(User user) {
         mDatabase.child("users").child(user.getId()).setValue(user);

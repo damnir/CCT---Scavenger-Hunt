@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "320730990455",
-    "firebase_url": "https://cct-scavenger-hunt-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "cct-scavenger-hunt",
-    "storage_bucket": "cct-scavenger-hunt.appspot.com"
+    "project_number": "517368453947",
+    "firebase_url": "https://scavenger-hunt-338900-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "scavenger-hunt-338900",
+    "storage_bucket": "scavenger-hunt-338900.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:320730990455:android:3ae245a06078f42f4e4372",
+        "mobilesdk_app_id": "1:517368453947:android:46b34ac3fabeb4a34db51e",
         "android_client_info": {
           "package_name": "com.example.scavengerhunt"
         }
       },
       "oauth_client": [
         {
-          "client_id": "320730990455-nufjsoeng73nr0gr16llkorvlniq4eki.apps.googleusercontent.com",
+          "client_id": "517368453947-o4l7e1mep6k1lf1kugreu498lnlgn98e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAlvEuB7Q-fMsMYQ8V6sVW87fEmd74JydM"
+          "current_key": "AIzaSyCHNBuRPqdZcvD9lud1vOeAv2NyqnBbzik"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "320730990455-nufjsoeng73nr0gr16llkorvlniq4eki.apps.googleusercontent.com",
+              "client_id": "517368453947-o4l7e1mep6k1lf1kugreu498lnlgn98e.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

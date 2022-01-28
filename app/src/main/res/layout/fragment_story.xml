@@ -15,9 +15,9 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/story_newstorybutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="testStories"
+        android:onClick="onNewStoryClick"
         android:text="Add New Story" />
 </LinearLayout>

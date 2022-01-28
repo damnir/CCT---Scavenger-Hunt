@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
         //request location permissions
         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
 
         //Intent intent = new Intent(this, CompassActivity.class);
         //startActivity(intent);

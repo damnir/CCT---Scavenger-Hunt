@@ -127,6 +127,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             double lat = location.getLatitude();
             double lng = location.getLongitude();
 
+            Scavenger.getInstance().setaLat(lat);
+            Scavenger.getInstance().setLng(lng);
+
             /*
             Scavenger.getInstance().setaLat(lat);
             Scavenger.getInstance().setLng(lng);

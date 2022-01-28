@@ -126,9 +126,9 @@ public class TrackingService extends Service {
 
         //build the foreground notification
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Running Tracker")
-                .setContentText("Currently tracking movement ")
-                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setContentTitle("Scavenger Hunt")
+                .setContentText("Using location services to track movement.")
+                .setSmallIcon(R.drawable.camping_icon_13511)
                 .setContentIntent(pendingIntent)
                 .build();
 
