@@ -12,7 +12,10 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.IBinder;
@@ -24,7 +27,9 @@ import android.widget.TextView;
 
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
+import com.example.scavengerhunt.Entities.User;
 import com.example.scavengerhunt.Firebase.Database;
+import com.example.scavengerhunt.Misc.Adapters.SessionAdapter;
 import com.example.scavengerhunt.Misc.LatLngConverter;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.Misc.TrackingService;
@@ -38,6 +43,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback{
@@ -56,6 +67,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     private TextView distance;
     private TextView finalDestText;
     private TextView time;
+
+    private SessionAdapter adapter;
 
 
     @Override
@@ -83,6 +96,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         latLngConverter = new LatLngConverter();
         //TEMPORARY VARIABLE - Reuse destination site object to get coordinates pls
+        adapter = new SessionAdapter(getActivity());
+
+        RecyclerView recyclerView = view.findViewById(R.id.map_recycler);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        setData();
 
         return  view;
     }
@@ -190,5 +211,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         else{
             return (distance/1000 + "km away");
         }
+    }
+
+    private void setData() {
+        List<Scavenger> data = new ArrayList<>();
+
+        Database.getInstance().getDBRef().child("active_sessions")
+                .child(User.getInstance().getActiveSessionId()).child("scavengers").get().
+                addOnCompleteListener(task -> {
+                    DataSnapshot ds = task.getResult();
+                    for(DataSnapshot c : ds.getChildren()) {
+                        data.add(c.getValue(Scavenger.class));
+                    }
+                    adapter.setData(data);
+                });
     }
 }
