@@ -35,7 +35,7 @@ public class Story {
     public Double getLat() { return this.lat; }
     public Double getLng() { return this.lng; }
 
-    public void setStamp(String stamp) {this.description = stamp;}
+    public void setStamp(String stamp) {this.stamp = stamp;}
     public String getStamp() {return this.stamp;}
 
 }

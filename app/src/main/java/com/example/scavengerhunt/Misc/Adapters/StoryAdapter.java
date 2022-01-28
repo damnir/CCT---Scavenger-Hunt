@@ -93,6 +93,8 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.DataViewHold
             mStory = story;
             if(story != null) {
                 stamp.setText(story.getStamp());
+                android.util.Log.d("IMAGE", "Name: " + story.getName() + " Stamp: " + story.getStamp() + " Description: " + story.getDescription());
+
                 title.setText(story.getName());
                 description.setText(story.getDescription());
                 map.onCreate(null);
