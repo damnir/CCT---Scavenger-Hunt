@@ -210,11 +210,12 @@ public class Database {
     }
 
     public void addMessage(Message message) {
+        /*
         String key = mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
-                .child("messages").push().getKey();
+                .child("messages").push().getKey();*/
 
         mDatabase.child("active_sessions").child(User.getInstance().getActiveSessionId())
-                .child("messages").child(key).setValue(message);
+                .child("messages").setValue(Session.getInstance().messages);
 
     }
 

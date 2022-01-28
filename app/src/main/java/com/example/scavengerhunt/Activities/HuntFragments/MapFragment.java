@@ -1,5 +1,6 @@
 package com.example.scavengerhunt.Activities.HuntFragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,6 +15,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,14 +35,18 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.example.scavengerhunt.Entities.Message;
 import com.example.scavengerhunt.Entities.Scavenger;
 import com.example.scavengerhunt.Entities.Session;
 import com.example.scavengerhunt.Entities.User;
 import com.example.scavengerhunt.Firebase.Database;
+import com.example.scavengerhunt.Misc.Adapters.MessageAdapter;
 import com.example.scavengerhunt.Misc.Adapters.SessionAdapter;
 import com.example.scavengerhunt.Misc.LatLngConverter;
 import com.example.scavengerhunt.R;
 import com.example.scavengerhunt.Misc.TrackingService;
+import com.example.scavengerhunt.ViewModels.LogViewModel;
+import com.example.scavengerhunt.ViewModels.MessagesViewModel;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -54,6 +61,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -77,8 +85,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     private TextView finalDestText;
     private TextView time;
     private FloatingActionButton msgButton;
+    private MessageAdapter messageAdapter;
 
     private SessionAdapter adapter;
+    private List<Message> messages;
 
 
     @Override
@@ -102,6 +112,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         // Gets the MapView from the XML layout and creates it
         final SupportMapFragment myMAPF = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
+
         myMAPF.getMapAsync(this);
         msgButton = view.findViewById(R.id.map_fob);
         msgButton.setOnClickListener(new View.OnClickListener() {
@@ -111,14 +122,42 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             }
         });
 
+        messages = new ArrayList<>();
+
         latLngConverter = new LatLngConverter();
         //TEMPORARY VARIABLE - Reuse destination site object to get coordinates pls
         adapter = new SessionAdapter(getActivity());
+        messageAdapter = new MessageAdapter(getActivity());
 
         RecyclerView recyclerView = view.findViewById(R.id.map_recycler);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        MessagesViewModel viewModel = new ViewModelProvider(getActivity(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(MessagesViewModel.class);
+
+        viewModel.updateDBReference();
+
+        LiveData<DataSnapshot> liveData = viewModel.getMsgs();
+
+        liveData.observe(this, dataSnapshot -> {
+            if (dataSnapshot != null) {
+                if(!dataSnapshot.hasChildren()){
+                    return;
+                }
+                Session session = Session.getInstance();
+
+                session.messages.clear();
+
+                //session =  dataSnapshot.getValue(Session.class);
+                for(DataSnapshot c : dataSnapshot.getChildren()) {
+                    session.messages.add(c.getValue(Message.class));
+                }
+
+                messageAdapter.setData(session.messages);
+            }
+        });
 
         setData();
 
@@ -240,15 +279,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     public void inflatePopup() {
+        Log.d("MESSAGE", "inflateCalled");
+
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater)
                 getActivity().getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.chat_view, null);
 
         TextView stamp = popupView.findViewById(R.id.message_stamp);
-        TextView message = popupView.findViewById(R.id.message_message);
+        TextView messageText = popupView.findViewById(R.id.messages_input);
 
+        Message message = new Message();
+
+
+        RecyclerView recyclerView = popupView.findViewById(R.id.messages_recycler);
+
+        recyclerView.setAdapter(messageAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         // create the popup window
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -268,6 +317,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             public boolean onTouch(View v, MotionEvent event) {
                 popupWindow.dismiss();
                 return true;
+            }
+        });
+        ImageButton buttonSend = popupView.findViewById(R.id.message_send);
+        buttonSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                message.setMessage(messageText.getText().toString());
+                message.setStamp(User.getInstance().getName());
+                Session.getInstance().addMessage(message);
+                Log.d("MESSAGE", "messgae sent");
+                Database.getInstance().addMessage(message);
             }
         });
     }

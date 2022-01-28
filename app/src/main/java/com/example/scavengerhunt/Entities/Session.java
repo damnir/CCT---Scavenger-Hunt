@@ -18,6 +18,7 @@ public class Session {
     private List<Artifact> artifactList;
     private List<Site> siteList;
     public List<Story> stories;
+    public List<Message> messages;
 
     private Database dbRef = Database.getInstance();
 
@@ -27,7 +28,7 @@ public class Session {
         artifactList = new ArrayList<>();
         siteList = new ArrayList<>();
         stories = new ArrayList<>();
-
+        messages = new ArrayList<>();
         dbRef = Database.getInstance();
 
         //this.sessionId = id;
@@ -95,6 +96,13 @@ public class Session {
         return this.logs;
     }
 
+    public void setMessages(List<Message> mMessages) {
+        this.messages = mMessages;
+    }
+    public List<Message> getMessages() {
+        return this.messages;
+    }
+
     public void addLog(Log nLog) {
         logs.add(nLog);
     }
@@ -119,6 +127,8 @@ public class Session {
     public List<Story> getStories() {
         return this.stories;
     }
+
+    public void addMessage(Message message) { messages.add(message); }
 
 
 

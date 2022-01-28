@@ -133,6 +133,7 @@ public class HuntActivity extends AppCompatActivity {
                     android.util.Log.d("GEO", "geofence failed to add");
                 });
 
+        /*
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(SessionViewModel.class);
 
@@ -146,7 +147,7 @@ public class HuntActivity extends AppCompatActivity {
                     session =  dataSnapshot.getValue(Session.class);
                 }
             }
-        });
+        });*/
 
         Intent intent = new Intent(this, TrackingService.class);
         startService(intent);
